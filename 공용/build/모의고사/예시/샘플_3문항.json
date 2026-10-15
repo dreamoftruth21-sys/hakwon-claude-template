@@ -1,0 +1,42 @@
+{
+ "school": "_예시",
+ "name": "샘플_3문항_실전모의고사",
+ "title": "설치 확인용 <b>샘플 실전 모의고사</b>",
+ "subtitle": "예시 학교 &nbsp;·&nbsp; 지문 2개 · 3문항",
+ "guide": "&#9679; 문항 수 <b>3문항</b> · 배점 <b>10점</b> &nbsp;&#9679; 모든 문항은 <b>5지선다</b>이다.",
+ "footer": "샘플 실전 모의고사",
+ "target": [1, 3, 0],
+ "sol_numbers": "forbid",
+ "passages": {
+  "P1": {
+   "header": "[1~2] 다음 글을 읽고 물음에 답하시오.",
+   "range": [1, 2],
+   "kind": "rewrite",
+   "body": "Many students believe that studying for long hours at once is the key to success. However, research on memory suggests that short reviews spread over several days work better. When we review material several times with breaks in between, our brains have to work harder to recall it, and this effort makes the memory stronger. {{빈칸}}, cramming the night before may feel productive, but most of what is learned this way is quickly forgotten."
+  },
+  "P2": {
+   "header": "[3] 다음 글을 읽고 물음에 답하시오.",
+   "range": [3, 3],
+   "kind": "rewrite",
+   "body": "The school library will be open on Saturdays starting next month. Students can borrow up to three books at a time, and the books must be returned within two weeks. Laptops are available for use inside the library, but they cannot be taken home. A quiet study room can be reserved online one day in advance."
+  }
+ },
+ "questions": [
+  {"n": 1, "pt": 3, "passage": "P1", "box": null, "box_ref": null,
+   "stem": "윗글의 주제로 가장 적절한 것은?", "show": "list", "fixed": false, "ans": 0,
+   "opts": ["the benefit of spreading review over several days", "the importance of sleeping well before an exam", "the reasons students prefer studying in groups", "the danger of studying without a clear plan", "the way teachers design difficult tests"],
+   "sol": "짧은 복습을 여러 날에 나눠 하는 것이 한 번에 오래 공부하는 것보다 기억에 낫다는 글이다. 잠 · 모둠 공부 · 계획 · 시험 출제는 글에 나오지 않는다."},
+  {"n": 2, "pt": 3, "passage": "P1", "box": null, "box_ref": null,
+   "stem": "윗글의 빈칸에 들어갈 말로 가장 적절한 것은?", "show": "row", "fixed": false, "ans": 0,
+   "opts": ["In contrast", "For example", "As a result", "In addition", "Similarly"],
+   "sol": "앞 문장은 나눠서 복습하면 기억이 강해진다는 내용이고, 빈칸 뒤는 하루 전에 몰아서 공부한 내용은 금방 잊힌다는 반대 내용이다. 대조를 나타내는 In contrast 가 알맞다."},
+  {"n": 3, "pt": 4, "passage": "P2", "box": null, "box_ref": null,
+   "stem": "윗글의 내용과 일치하는 것은?", "show": "list", "fixed": false, "ans": 0,
+   "opts": ["책은 한 번에 세 권까지 빌릴 수 있다.", "토요일에는 도서관이 문을 닫는다.", "노트북은 집으로 빌려 갈 수 있다.", "책은 한 달 안에 반납하면 된다.", "공부방은 당일에만 예약할 수 있다."],
+   "sol": "up to three books at a time — 한 번에 세 권까지. 토요일에도 연다(open on Saturdays), 노트북은 도서관 안에서만(cannot be taken home), 반납은 2주 안(within two weeks), 공부방은 하루 전 예약(one day in advance)."}
+ ],
+ "checks": [
+  {"type": "blank_once", "passages": ["P1"]},
+  {"type": "answer_is", "q": 2, "text": "In contrast"}
+ ]
+}

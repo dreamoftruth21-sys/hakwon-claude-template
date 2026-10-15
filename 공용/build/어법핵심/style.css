@@ -1,0 +1,21 @@
+@page { size: A4; margin: 11mm 12mm 13mm; }
+body { font-family: "Malgun Gothic"; font-size: 8.5pt; line-height: 1.36; color: #1b2430; }
+h1 { font-size: 13.5pt; margin: 0 0 1px; color: #1F4E79; }
+.sub { font-size: 8pt; color: #5a6675; margin: 0 0 6px; }
+.check { border: 1.3px solid #1F4E79; padding: 5px 10px; margin-bottom: 7px; background: #f3f6fa; break-inside: avoid; }
+.check h2 { font-size: 9.6pt; margin: 0 0 2px; color: #1F4E79; }
+.check ol { margin: 0; padding-left: 18px; }
+.sec { break-inside: avoid; margin-bottom: 6px; border-top: 1.6px solid #1F4E79; padding-top: 3px; }
+.sec h2 { font-size: 10.4pt; margin: 0 0 1px; color: #1F4E79; }
+.sec h2 .n { display: inline-block; min-width: 18px; background: #1F4E79; color: #fff; text-align: center;
+             border-radius: 3px; margin-right: 5px; font-size: 9.4pt; }
+.rule { margin: 0 0 3px; }
+table { border-collapse: collapse; margin: 0 0 3px; font-size: 8.3pt; }
+td { border: 1px solid #c6ced8; padding: 1px 6px; vertical-align: top; }
+td:first-child { background: #f3f6fa; white-space: nowrap; }
+.ex { margin: 1px 0 2px; padding-left: 6px; border-left: 3px solid #d6dde6; }
+.src { font-size: 7.2pt; color: #6b7684; }
+.en { font-family: "Times New Roman", "Malgun Gothic", serif; font-size: 9.3pt; }
+.k { background: #fff1b8; }
+.wr { font-size: 8.2pt; color: #b0302a; margin-left: 6px; white-space: nowrap; }
+.nt { font-size: 8pt; color: #3a5a7a; margin-left: 6px; }

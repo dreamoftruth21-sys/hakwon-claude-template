@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>반이름 기말 수업계획</title>
+<style>
+:root{
+  --bg:#f7f6f2; --card:#ffffff; --ink:#1f2328; --sub:#5b6270; --line:#dcd9d0;
+  --w7:#2f6fb3; --w7bg:#e8f0fa; --w8:#2e8a5a; --w8bg:#e6f4ec; --pr:#b0492c; --prbg:#fbeae4;
+  --off:#eeeeee; --offink:#8a8a8a; --hi:#fff4c2; --ex:#7a5bb0; --exbg:#f0eaf9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181c; --card:#1f2228; --ink:#e7e9ee; --sub:#a3aab6; --line:#343944;
+    --w7:#7fb2ea; --w7bg:#1d2b3d; --w8:#6fcf9b; --w8bg:#1a3226; --pr:#f09a7d; --prbg:#3a2219;
+    --off:#2a2d33; --offink:#7d828c; --hi:#4a4220; --ex:#c2a8ef; --exbg:#2d2440;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16181c; --card:#1f2228; --ink:#e7e9ee; --sub:#a3aab6; --line:#343944;
+  --w7:#7fb2ea; --w7bg:#1d2b3d; --w8:#6fcf9b; --w8bg:#1a3226; --pr:#f09a7d; --prbg:#3a2219;
+  --off:#2a2d33; --offink:#7d828c; --hi:#4a4220; --ex:#c2a8ef; --exbg:#2d2440;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Pretendard","Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+main{max-width:1240px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:22px;margin:0 0 4px}
+.lead{color:var(--sub);margin:0 0 20px}
+h2{font-size:18px;margin:34px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.card b{display:block;font-size:13px;color:var(--sub);font-weight:600}
+.card span{font-size:16px;font-weight:700}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 12px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:14px}
+.step small{display:block;color:var(--sub);font-size:12px}
+.l7 .step{border-left:4px solid var(--w7)} .l8 .step{border-left:4px solid var(--w8)} .pr .step{border-left:4px solid var(--pr)}
+.arrow{color:var(--sub)}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:4px;padding:0 6px;margin-right:6px}
+.t7{background:var(--w7bg);color:var(--w7)} .t8{background:var(--w8bg);color:var(--w8)} .tp{background:var(--prbg);color:var(--pr)} .tx{background:var(--exbg);color:var(--ex)}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:900px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;font-size:14px}
+th{background:var(--bg);font-size:13px;color:var(--sub);white-space:nowrap}
+td.d{white-space:nowrap;font-weight:600}
+td.d small{display:block;font-weight:400;color:var(--sub)}
+td.mid{min-width:92px;font-size:12.5px;color:var(--sub)}
+tr.week td{background:var(--bg);font-weight:700;font-size:14px;color:var(--ink)}
+tr.week td em{font-style:normal;font-weight:400;color:var(--sub);margin-left:8px}
+tr.off td{background:var(--off);color:var(--offink)}
+td.voca{min-width:150px}
+td.voca b{display:block}
+td.hw b{display:block}
+.pg{color:var(--sub);font-size:12.5px}
+mark{background:var(--hi);color:inherit;padding:0 2px;border-radius:3px}
+ul{margin:6px 0;padding-left:20px}
+li{margin:3px 0}
+.note{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px}
+.src{font-size:12px;color:var(--sub)}
+footer{margin-top:40px;color:var(--sub);font-size:12px;text-align:center}
+@page{size:A4 landscape;margin:12mm 10mm 14mm;@bottom-center{content:counter(page) " / " counter(pages);font-size:10px;color:#666}}
+@media print{body{background:#fff}main{max-width:none;padding:0}.wrap{overflow:visible;border:none}table{min-width:0}tr{break-inside:avoid}h2{break-after:avoid}}
+</style>
+</head>
+<body>
+<main>
+<!-- h1 = 쪽 아래에 찍히는 제목. 반 · 연도 · 자료명을 넣는다 -->
+<h1>반이름 · 2026년 2학기 기말고사 대비 · 수업 계획</h1>
+<p class="lead">메인 교재 ○○ · 한 과를 나가는 순서 한 줄 · 2026-00-00 작성</p>
+
+<div class="cards">
+  <div class="card"><b>시험</b><span>0/0(요일)</span><br><small>메모</small></div>
+  <div class="card"><b>범위</b><span>L0 · L0</span><br><small>단원 제목</small></div>
+  <div class="card"><b>문법</b><span>문법 항목</span></div>
+  <div class="card"><b>휴강</b><span>0/0 · 0/0</span><br><small>이유</small></div>
+  <div class="card"><b>수업 횟수</b><span>요일별 횟수</span></div>
+</div>
+
+<h2>한 과를 나가는 순서</h2>
+<div class="flow l7">
+  <div class="step">① 단계<small>쪽</small></div><span class="arrow">→</span>
+  <div class="step">② 단계<small>쪽</small></div><span class="arrow">→</span>
+  <div class="step"><b>③ 통합</b></div>
+</div>
+<p class="pg">매 수업 순서 · 숙제 원칙 · 시험 원칙을 여기에 적는다.</p>
+
+<h2>단어 진행</h2>
+<div class="flow l7">
+  <span class="tag t7">L0</span>
+  <div class="step">섹션<small>쪽 · 날짜</small></div><span class="arrow">→</span>
+  <div class="step"><b>통합</b><small>날짜</small></div>
+</div>
+
+<!-- print-move-up: 인쇄할 때만 '회차별 계획' 앞(1쪽)으로 올라간다 -->
+<h2 class="print-move-up">쓰는 자료</h2>
+<div class="note print-move-up"><ul>
+  <li><b>교재</b> — 쪽 범위</li>
+</ul>
+<p class="src">아직 없는 자료: </p>
+</div>
+
+<!-- print-break: 인쇄할 때 여기서 쪽을 넘긴다 -->
+<h2 class="print-break">회차별 계획</h2>
+<div class="wrap">
+<table>
+<thead><tr><th>회차</th><th>날짜</th><th>진도</th><th>단어시험</th><th>수업 (교재 쪽)</th><th>숙제</th></tr></thead>
+<tbody>
+<!-- 주 머리: tag 색 t7(파랑) · t8(초록) · tp(주황) · tx(보라) -->
+<tr class="week"><td colspan="6"><span class="tag t7">L0</span>D-0주 · 0/0~0/0 <em>이번 주 목표</em></td></tr>
+<tr><td class="d">1</td><td class="d">0/0 월<small>반</small>0/0 화<small>반</small></td><td class="mid">① 단계</td>
+ <td class="voca"><b>단어 섹션</b><span class="pg">쪽</span></td>
+ <td>수업 내용 <span class="pg">쪽</span><br><mark>강조할 것</mark></td>
+ <td class="hw"><b>금까지</b>숙제</td></tr>
+<tr class="off"><td>—</td><td>0/0 요일</td><td colspan="4">휴강 — 이유</td></tr>
+</tbody>
+</table>
+</div>
+
+<footer>반이름 · 2026년 2학기 기말 · 수업 계획</footer>
+</main>
+</body>
+</html>

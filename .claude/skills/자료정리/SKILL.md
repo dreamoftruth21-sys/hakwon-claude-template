@@ -19,7 +19,7 @@ description: 다운로드 폴더(또는 학원 폴더 루트에 새로 넣은 �
 ### 1. 계획 (dry-run)
 
 ```
-powershell -NoProfile -File ".claude\skills\자료정리\scripts\sort.ps1"
+powershell -NoProfile -ExecutionPolicy Bypass -File ".claude\skills\자료정리\scripts\sort.ps1"
 ```
 
 학원 폴더 루트에 새 자료를 넣었다고 하면 `-Source "<학원 폴더 경로>"` 를 붙인다.
@@ -32,7 +32,7 @@ Python·스크립트 경로는 루트 `CLAUDE.md` 의 실행 환경 절을 따�
 ### 2. 실행
 
 ```
-powershell -NoProfile -File ".claude\skills\자료정리\scripts\sort.ps1" -Run
+powershell -NoProfile -ExecutionPolicy Bypass -File ".claude\skills\자료정리\scripts\sort.ps1" -Run
 ```
 
 **잠김**이 나오면 사용자에게 뷰어를 닫으라고 하고, 닫았다고 하면 같은 명령을 다시 돌린다. 이미 옮긴 것은 자동으로 건너뛴다.
@@ -50,7 +50,7 @@ powershell -NoProfile -File ".claude\skills\자료정리\scripts\sort.ps1" -Run
 열어 봐도 모르겠으면 `_정리대기/다운로드_확인필요` 로 옮기고 사용자에게 묻는다. 손으로 옮길 때는:
 
 ```
-powershell -NoProfile -File ".claude\skills\자료정리\scripts\put.ps1" -Src "<파일>" -Dest "세종예고2\학교자료\부교재"
+powershell -NoProfile -ExecutionPolicy Bypass -File ".claude\skills\자료정리\scripts\put.ps1" -Src "<파일>" -Dest "세종예고2\학교자료\부교재"
 ```
 
 ### 4. 배운 것을 규칙에 넣는다

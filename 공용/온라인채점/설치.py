@@ -33,7 +33,7 @@ def clasp(args, cwd=None, timeout=600):
 
 def state():
     try:
-        return json.loads(STATE.read_text(encoding="utf-8"))
+        return json.loads(STATE.read_text(encoding="utf-8-sig"))  # BOM 이 붙어 있어도 읽는다 (못 읽으면 백업 기록까지 덮어쓴다)
     except Exception:
         return {}
 

@@ -52,7 +52,7 @@ class Book:
         self.src = {k: dict(v, path=base / v["file"]) for k, v in c["sources"].items()}
         hd = c.get("hide")
         self.hide_rx = re.compile(hd["regex"], re.I) if hd else None
-        self.hide_marker = hd["marker"] if hd else None
+        self.hide_marker = ([hd["marker"]] if isinstance(hd["marker"], str) else hd["marker"]) if hd else None   # 표시 줄 하나 또는 여러 개 (과마다 다를 때)
         for st in c["stages"]:
             st.setdefault("toc", f"{st['label']}  {st['name']}")
             st.setdefault("short", st["toc"].replace("  ", " "))
@@ -70,15 +70,33 @@ class Book:
 
     # ---------- 쪽 ----------
     def srcs(self, item):
-        return [(s, p if s == "part" else pages_of(p)) for s, p in item["src"]]
+        """["part", 파일] · ["part", 파일, [시작, 끝]] (그 파일의 일부 — 시작 · 끝은 쪽 첫머리 정규식, null 이면 처음 · 끝까지) · [원본, 쪽]
+        → part 는 (파일, 첫 쪽, 끝 쪽) 0부터, 원본은 쪽 목록."""
+        out = []
+        for x in item["src"]:
+            s, p = x[0], x[1]
+            if s != "part": out.append((s, pages_of(p))); continue
+            d = pymupdf.open(self.parts / p); a, b = 0, d.page_count - 1
+            if len(x) > 2:
+                def find(rx):
+                    i = next((i for i, pg in enumerate(d) if re.search(rx, pg.get_text()[:700], re.M)), None)
+                    if i is None: raise RuntimeError(f"{item.get('key', item['title'])}: {p} 에서 '{rx}' 쪽을 못 찾았다")
+                    return i
+                lo, hi = x[2]
+                if lo: a = find(lo)
+                if hi: b = find(hi) - 1
+                if b < a: raise RuntimeError(f"{item.get('key', item['title'])}: {p} 구간이 비었다")
+            out.append((s, (p, a, b)))
+        return out
 
     def count(self, srcs):
-        return sum(pymupdf.open(self.parts / p).page_count if s == "part" else len(p) for s, p in srcs)
+        return sum(p[2] - p[1] + 1 if s == "part" else len(p) for s, p in srcs)
 
     def page_texts(self, srcs):
         out = []
         for s, p in srcs:
-            if s == "part": out += [pg.get_text() for pg in pymupdf.open(self.parts / p)]
+            if s == "part":
+                d = pymupdf.open(self.parts / p[0]); out += [d[i].get_text() for i in range(p[1], p[2] + 1)]
             else:
                 d = pymupdf.open(self.src[s]["path"]); out += [d[q - 1].get_text() for q in p]
         return out
@@ -130,7 +148,7 @@ class Book:
     # ---------- 원본 쪽 ----------
     def hide(self, pg):
         """범위 밖 지문이 섞인 쪽: 표시 줄부터 쪽 아래 머리글 위까지 지운다 (글자까지 — 흰 칸만 덮으면 복사 · 검색에 남는다)."""
-        hits = pg.search_for(self.hide_marker)
+        hits = [h for m in self.hide_marker for h in pg.search_for(m)]
         if not hits: return False
         y = min(h.y0 for h in hits) - 4
         pg.add_redact_annot(pymupdf.Rect(0, y, pg.rect.width, pg.rect.height - 24), fill=(1, 1, 1))
@@ -140,7 +158,7 @@ class Book:
     def append(self, out, srcs, answer, log, clean=None):
         for s, pages in srcs:
             if s == "part":
-                out.insert_pdf(pymupdf.open(self.parts / pages)); continue
+                out.insert_pdf(pymupdf.open(self.parts / pages[0]), from_page=pages[1], to_page=pages[2]); continue
             info = self.src[s]; d = pymupdf.open(info["path"])
             for p in pages:
                 t = d[p - 1].get_text()
@@ -171,13 +189,16 @@ class Book:
             a, z = ps[0].split('~')[0], ps[-1].split('~')[-1]
             rows.append(("i", f"{st['short']} 정답", " · ".join(t.split(' — ')[0] for l, t, p in arows if l == st["label"]), rng(int(a), int(z))))
         self.parts.mkdir(exist_ok=True)
-        docs = {"cover": html_pdf(self.cover_html(), self.parts / "_cover.pdf"), "toc": html_pdf(toc_html(rows), self.parts / "_toc.pdf")}
+        docs = {"cover": html_pdf(self.cover_html(), self.parts / "_cover.pdf")}
+        for tight in (0, 1, 2):                                    # 줄이 많으면 줄 간격을 좁혀 한 쪽에 맞춘다
+            docs["toc"] = html_pdf(toc_html(rows, tight), self.parts / "_toc.pdf")
+            lastb = max(b[3] for b in docs["toc"][0].get_text("blocks"))
+            if docs["toc"].page_count == 1 and lastb < 800: break
         assert docs["toc"].page_count == 1, f"차례가 {docs['toc'].page_count}쪽 — 한 쪽으로 줄일 것"
-        lastb = max(b[3] for b in docs["toc"][0].get_text("blocks"))
         assert lastb < 800, f"차례가 쪽 아래로 넘친다 (마지막 줄 y={lastb:.0f})"
         dvd = {}
         for st, dv, items in toc:
-            dvd[st["label"]] = html_pdf(self.divider_html(st["label"], st["name"], st.get("desc", ""), items), self.parts / f"_div_{dv}.pdf")
+            dvd[st["label"]] = html_pdf(self.divider_html(st["label"], st["name"], st.get("desc", ""), items, tight=len(items) > 10), self.parts / f"_div_{dv}.pdf")   # 항목이 많으면 촘촘하게
         ans_items = [(self.stage[l]["short"], t, p) for l, t, p in arows]
         dvd["답"] = html_pdf(self.divider_html("✔", "정답과 해설", "", ans_items, tight=True), self.parts / "_div_ans.pdf")
         for k, d in dvd.items():                                   # 속표지 표가 쪽 아래로 넘치지 않게
@@ -207,7 +228,7 @@ class Book:
         self.out.parent.mkdir(parents=True, exist_ok=True)
         out.save(self.out, garbage=4, deflate=True)
         a = pymupdf.open(); a.insert_pdf(out, from_page=adv - 1, to_page=total - 1); a.save(self.out_a, garbage=4, deflate=True)
-        (self.parts / "쪽.json").write_text(json.dumps(pages, ensure_ascii=False, indent=1), encoding="utf-8")
+        (self.parts / ("쪽.json" if self.cf.stem == "교재" else f"쪽_{self.cf.stem}.json")).write_text(json.dumps(pages, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"saved {self.out.name}  {total}쪽 · 정답과 해설 {adv}~{total}쪽  지움: {log}")
         for st, dv, items in toc:
             print(f"   {dv:>4}  [{st['short']}]"); [print(f"   {p:>8}  {t}") for t, s, p in items]
@@ -222,7 +243,7 @@ class Book:
         md = ROOT / pl["md"]
         t = md.read_text(encoding="utf-8")
         s, e = t.index(pl["from"]), t.index(pl["to"])
-        rows = "\n".join(f"| {d} | {h.format_map(pg)} | {m} |" for d, h, m in pl["rows"])
+        rows = "\n".join(f"| {d} | {h.format_map(pg)} | {m.format_map(pg)} |" for d, h, m in pl["rows"])
         sec = "\n".join(pl["text"]).format_map(dict(pg, rows=rows)) + "\n\n"
         t = t[:s] + sec + t[e:]
         for rx, rep in pl.get("replace", []):
@@ -318,14 +339,16 @@ body{{margin:0;font-family:'Malgun Gothic',sans-serif;color:#1f2633;-webkit-prin
 </style><body>"""
 
 
-def toc_html(rows):
+def toc_html(rows, tight=0):
     tr = ""
     for kind, a, b, c in rows:
         if kind == "g":
             tr += f"<tr class='{'ga' if a == '정답과 해설' else ''}'><td colspan=2 class='g'>{html.escape(a)}</td><td class='p'>{c}</td></tr>"
         else:
             tr += f"<tr><td class='t'>{html.escape(a)}</td><td class='s'>{html.escape(b)}</td><td class='p'>{c}</td></tr>"
-    return BASE + f"<div class='pg tc'><h1>차례</h1><table>{tr}</table></div></body>"
+    pad = ["", ".tc td{padding:.75mm 2mm}.tc td.g{padding:2mm 0 .4mm}.tc h1{margin-top:12mm}",
+           ".tc td{padding:.5mm 2mm;font-size:8.8pt}.tc td.g{padding:1.6mm 0 .3mm}.tc h1{margin-top:10mm}"][tight]
+    return BASE.replace("</style>", pad + "</style>") + f"<div class='pg tc'><h1>차례</h1><table>{tr}</table></div></body>"
 
 
 if __name__ == "__main__":

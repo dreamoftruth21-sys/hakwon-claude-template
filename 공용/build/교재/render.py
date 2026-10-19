@@ -93,6 +93,8 @@ EXCSS = """
 .compact table.j td.ox{width:11mm}.compact table.j td.fx{width:34mm}
 .exam .cols{column-count:2;column-gap:7mm;column-rule:.5pt solid #bbb}
 .exam .prob{break-inside:avoid;margin:0 0 4mm}
+.prob.sel{break-inside:auto}.qp{break-inside:avoid}                              /* 「있는 대로」는 길어서 통째로 밀면 빈 쪽이 생긴다 — 지문 · 보기 상자 · 판정표는 각각 자르지 않는다 */
+table.j.s{break-inside:avoid}table.j.s td{height:5.6mm}.exam table.j.s td{height:4.8mm}
 .exam .q{font-size:9.3pt}
 .exam .psg{font-size:10pt;line-height:1.62;border:.7pt solid #777;border-radius:0;padding:2mm 2.4mm;text-align:left}
 .exam .box{font-size:9.8pt;border:.6pt solid #777;border-radius:0;background:#fff;padding:1.6mm 2.2mm}
@@ -122,6 +124,8 @@ def choices(p):
     lis = []
     for i, c in enumerate(p["choices"]):
         t = f"<span class='tag'>{html.escape(tag)}</span>" if tag else ""
+        if c.strip() == CIR[i]:                          # 선택지가 번호 그 자체(밑줄 ①~⑤ 고르기)면 한 번만 — '① ①' 이중 표기 방지
+            lis.append(f"<li><span>{CIR[i]}</span>{t}</li>"); continue
         lis.append(f"<li><span>{CIR[i]}</span><span class='t {'en' if re.search(r'[A-Za-z]{3}', c) and not re.search(r'[가-힣]', c) else ''}'>{mk(c)}</span>{t}</li>")
     row = " row" if (not tag and max(len(c) for c in p["choices"]) <= 16) else ""
     return f"<ul class='ch{row}'>{''.join(lis)}</ul>"
@@ -130,6 +134,16 @@ def choices(p):
 def judge_table(p):
     rows = "".join(f"<tr><td class='k'>{it['k']}</td><td class='ox'></td><td class='fx'></td><td></td></tr>" for it in p["items"])
     return f"<table class='j'><tr><th>기호</th><th>O / X</th><th>X → 고칠 형태</th><th>판단 근거 (어법 규칙)</th></tr>{rows}</table>"
+
+
+def select_html(p):
+    """「있는 대로」 고르기 — 보기 상자 + 판정표(기호 · O/X · 근거 문장 번호 / 틀린 낱말) + 답 칸 (한솔고2 10/16)"""
+    talk = re.compile(r"^(학생|Student)\s*[A-Z]\s*:")                # 학생 대화형 — t 가 「학생 A: …」로 시작하면 기호를 따로 붙이지 않는다
+    box = "".join(f"<p>{mk(it['t'])}</p>" if talk.match(it["t"]) else f"<p><b>{html.escape(it['k'])}.</b> {mk(it['t'])}</p>" for it in p["items"])
+    rows = "".join(f"<tr><td class='k'>{html.escape(it['k'])}</td><td class='ox'></td><td></td></tr>" for it in p["items"])
+    return (f"<div class='box'>{box}</div>"
+            f"<table class='j s'><tr><th>기호</th><th>O / X</th><th>O → 근거 문장 번호 · X → 틀린 낱말</th></tr>{rows}</table>"
+            f"<div style='margin-top:1.6mm;font-weight:700'>답: (<span style='display:inline-block;width:60mm'></span>)</div>")
 
 
 def vocab_table(p):
@@ -151,12 +165,19 @@ def prob_html(p, n):
         return h + "</div>", n
     if k == "vocab":
         return f"<div class='prob' style='break-inside:auto'>{vocab_table(p)}</div>", n
-    h = f"<div class='prob'><div class='q'><span class='n'>{n}.</span>{mk(p.get('q',''))}</div>"
-    if p.get("passage"): h += f"<div class='psg'>{para(p['passage'])}</div>"
-    if p.get("box"): h += f"<div class='box'>{para(p['box'])}</div>"
+    cls = "prob sel" if k == "select" else "prob"
+    h = f"<div class='{cls}'>"
+    qh = f"<div class='q'><span class='n'>{n}.</span>{mk(p.get('q',''))}</div>"
+    bx = f"<div class='box'>{para(p['box'])}</div>" if p.get("box") else ""
+    first = bx if p.get("box_first") else (f"<div class='psg'>{para(p['passage'])}</div>" if p.get("passage") else "")
+    h += f"<div class='qp'>{qh}{first}</div>"            # 발문이 단 · 쪽 끝에 혼자 남지 않게 첫 덩어리와 묶는다
+    if p.get("box_first"):                               # 순서배열의 주어진 글처럼 지문 앞에 오는 상자 (한솔고2 10/16)
+        if p.get("passage"): h += f"<div class='psg'>{para(p['passage'])}</div>"
+    elif bx: h += bx
     if k == "mcq" or (k == "judge" and p.get("choices")): h += choices(p)
     if k == "judge": h += judge_table(p)
     if k == "write": h += "<div class='lines'>" + "<div></div>" * int(p.get("lines", 2)) + "</div>"
+    if k == "select": h += select_html(p)
     return h + "</div>", n + 1
 
 
@@ -174,9 +195,14 @@ def ans_html(p, n):
         h += f"<b>{CIR[p['answer'] - 1]}</b> "
     if k == "write":
         h += f"<b>예시 답</b> {mk(p['answer'])} "
+    if k == "select":
+        h += f"<b>{html.escape(p['answer'])}</b> "
     h += mk(p.get("explain", "")) + f" <span style='color:#8a94a6'>({html.escape(p.get('src',''))})</span>"
     if p.get("tags"):
         h += "<br><span style='color:#4a5465'>" + html.escape(p.get("tag", "")) + ":</span> " + " · ".join(f"{CIR[i]} {html.escape(t)}" for i, t in enumerate(p["tags"]))
+    if k == "select":
+        rows = "".join(f"<tr><td>{html.escape(it['k'])}</td><td class='{'o' if it['ok'] else 'x'}'>{'O' if it['ok'] else 'X'}</td><td>{mk(it.get('why',''))}</td></tr>" for it in p["items"])
+        h += f"<table>{rows}</table>"
     if k == "judge":
         rows = "".join(
             f"<tr><td>{it['k']}</td><td class='{'o' if it['ok'] else 'x'}'>{'O' if it['ok'] else 'X'}</td>"
@@ -194,14 +220,15 @@ def render(sec, ans=False):
         np_ = " np" if (is_newpage(sec) and i > 0 and (not ans or is_exam(sec))) else ""
         ex = is_exam(sec) and not ans
         if ans and is_exam(sec):                         # 맨 위에 정답 번호만 → 그 아래 해설 (채점용)
-            flat, k = [], 1
+            flat, k = [], part.get("start", 1)
             for p in part["problems"]:
                 for q in (p["problems"] if p["kind"] == "bundle" else [p]):
-                    flat.append((k, CIR[q["answer"] - 1] if isinstance(q.get("answer"), int) else "—")); k += 1
+                    a_ = q.get("answer")
+                    flat.append((k, CIR[a_ - 1] if isinstance(a_, int) else (html.escape(a_) if q["kind"] == "select" else "—"))); k += 1
             cells = "".join(f"<td><span class='qn'>{n}</span><b>{a}</b></td>" for n, a in flat)
             out.append(f"<div class='part{np_}'><h2>{html.escape(part['title'])} 정답</h2><table class='grid'><tr>{cells}</tr></table>"
                        f"<div class='solh'>해설</div>")
-            n = 1
+            n = part.get("start", 1)
             for p in part["problems"]:
                 x, n = ans_html(p, n); out.append(x)
             out.append("</div>")
@@ -216,7 +243,7 @@ def render(sec, ans=False):
         else:
             out.append(f"<div class='part{np_}'><h2>{html.escape(part['title'])}</h2>")
             if part.get("note") and not ans: out.append(f"<div class='note'>{mk(part['note'])}</div>")
-        n = 1
+        n = part.get("start", 1)                          # 나눠 실은 part 는 원래 번호부터 (한솔고2 10/16)
         for p in part["problems"]:
             x, n = (ans_html if ans else prob_html)(p, n)
             out.append(x)

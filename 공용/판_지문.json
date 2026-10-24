@@ -1,6 +1,7 @@
 {
  "판": "2026-10-24",
  "태그": "판-2026-10-24",
+ "zip": "https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/%ED%8C%90-2026-10-24.zip",
  "파일수": 96,
  "파일": {
   ".claude/agents/검증.md": "f469748fc6fd0cbddf37013f1cb6463a",
@@ -8,7 +9,7 @@
   ".claude/agents/자료분류.md": "24011e7497d36b1a5ec18ee89ec26b25",
   ".claude/prompts/reset-handoff.md": "b8a3347aebcab18a3e40e2eb4a84dd53",
   ".claude/settings.json": "2612d986130116a6c01d348460aa8720",
-  ".claude/skills/갱신/SKILL.md": "4fcaa2d437821c8a03e49f056b5248ee",
+  ".claude/skills/갱신/SKILL.md": "9c19565da8c0f057aa376bf4a7cf8c2a",
   ".claude/skills/교재만들기/SKILL.md": "a734cdebb16cf1b0cc587d27ecddf102",
   ".claude/skills/내신피드백/SKILL.md": "77253c08fbaa21d6039d6b1045dd3d37",
   ".claude/skills/단어시험지/SKILL.md": "1f955b1ebe63eecb11d57299e45e49d9",
@@ -98,6 +99,6 @@
   "공용/온라인채점/해설넣기.py": "6bc560d5b4aa9ece8a84e894c2eedebd",
   "공용/온라인채점/해설재료.py": "f4eb344798edf3c259b48f1f44391618",
   "공용/정리/처음정리.py": "dfe07afb00bd401a2fd75cca316a0c3a",
-  "공용/판지문.py": "5be3398bc5fdc4c31a044715594bbf28"
+  "공용/판지문.py": "65eaf7c036aa07cd05a0a6d96c1af4bd"
  }
 }

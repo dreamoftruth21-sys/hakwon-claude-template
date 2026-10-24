@@ -7,7 +7,8 @@ description: GitHub 에 올라온 이 템플릿의 새 판(스킬 · 빌더 · �
 
 저장소: `https://github.com/dreamoftruth21-sys/hakwon-claude-template`
 - 새 판 zip: `https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/heads/main.zip`
-- 옛 판 zip: `https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/<태그>.zip` (태그 예: `판-2026-10-19`)
+- 옛 판 zip: `https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/<태그>.zip` — 태그의 「판」은 주소에서 `%ED%8C%90` 로 쓴다. 예: 태그 `판-2026-10-19` → `.../refs/tags/%ED%8C%90-2026-10-19.zip`. `공용/판_지문.json` 의 `zip` 칸에 완성된 주소가 있다(넷째 판부터).
+- zip 을 풀면 맨 위 폴더 이름이 `hakwon-claude-template-main` 또는 `hakwon-claude-template--2026-10-19`(한글이 빠진다)다. 그 안이 템플릿 루트다.
 
 작업은 스크래치 폴더에서 한다. 선생님 폴더에는 승인 뒤에만 쓴다.
 

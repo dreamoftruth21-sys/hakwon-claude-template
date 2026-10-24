@@ -14,12 +14,14 @@ import json
 import pathlib
 import re
 import sys
+import urllib.parse
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 MANIFEST = "공용/판_지문.json"
 TAG_PREFIX = "판-"
+REPO = "https://github.com/dreamoftruth21-sys/hakwon-claude-template"
 
 # 갱신이 덮어쓰는 템플릿 파일. (포함 패턴, 제외 패턴) — 경로는 템플릿 루트 기준 posix
 INCLUDE = [
@@ -99,10 +101,13 @@ def cmd_make():
     date = version_date(root)
     files = walk(root)
     files.pop(MANIFEST, None)
-    m = {"판": date, "태그": TAG_PREFIX + date if date else None, "파일수": len(files), "파일": dict(sorted(files.items()))}
+    tag = TAG_PREFIX + date if date else None
+    zip_url = (REPO + "/archive/refs/tags/" + urllib.parse.quote(tag) + ".zip") if tag else None   # 한글 태그는 주소에서 %ED%8C%90
+    m = {"판": date, "태그": tag, "zip": zip_url, "파일수": len(files), "파일": dict(sorted(files.items()))}
     (root / MANIFEST).write_text(json.dumps(m, ensure_ascii=False, indent=1), encoding="utf-8")
-    print("지문 %d개 → %s (판 %s · 태그 %s)" % (len(files), MANIFEST, date, m["태그"]))
-    print("판을 낼 때: git add -A · commit · git tag %s · git push --tags" % m["태그"])
+    print("지문 %d개 → %s (판 %s · 태그 %s)" % (len(files), MANIFEST, date, tag))
+    print("옛 판 zip 주소:", zip_url)
+    print("판을 낼 때: git add -A · commit · git tag %s · git push origin main --tags" % tag)
 
 
 # ── 대조 ──────────────────────────────────────────────────────────────

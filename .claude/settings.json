@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "command", "command": "py -X utf8 \"${CLAUDE_PROJECT_DIR}/공용/사용기록/기록.py\"", "timeout": 10 }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Skill|Edit|Write|MultiEdit|Bash|PowerShell",
+        "hooks": [
+          { "type": "command", "command": "py -X utf8 \"${CLAUDE_PROJECT_DIR}/공용/사용기록/기록.py\"", "timeout": 10 }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          { "type": "command", "command": "py -X utf8 \"${CLAUDE_PROJECT_DIR}/공용/사용기록/기록.py\"", "timeout": 10 }
+        ]
+      }
+    ]
+  }
+}

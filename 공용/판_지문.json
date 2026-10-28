@@ -1,7 +1,7 @@
 {
- "판": "2026-10-28-4",
- "태그": "판-2026-10-28-4",
- "zip": "https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/%ED%8C%90-2026-10-28-4.zip",
+ "판": "2026-10-28-5",
+ "태그": "판-2026-10-28-5",
+ "zip": "https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/%ED%8C%90-2026-10-28-5.zip",
  "파일수": 100,
  "파일": {
   ".claude/agents/검증.md": "f469748fc6fd0cbddf37013f1cb6463a",
@@ -17,7 +17,7 @@
   ".claude/skills/서술형채점/SKILL.md": "15d8d005fd02720f6dbb17b034b0244b",
   ".claude/skills/수업계획/SKILL.md": "8bb6b41579c76432e533211bd6bdedeb",
   ".claude/skills/수업정리/SKILL.md": "286c9c454099625ce8b1b311d9964383",
-  ".claude/skills/수업준비/SKILL.md": "bc365e9323e6c9f635242f5b30c5146e",
+  ".claude/skills/수업준비/SKILL.md": "c47faf665d8cd65f2e6bf454ad04880b",
   ".claude/skills/숙제합본/SKILL.md": "865ed265009e4996cfb0620de461a812",
   ".claude/skills/쉬운말번역/SKILL.md": "805af16b38b10bc0aa7c95cdc74be1ef",
   ".claude/skills/쉬운말번역/scripts/build.py": "6d95ef86796ddbacfd8c37e464db1e71",
@@ -29,7 +29,7 @@
   ".claude/skills/자료정리/scripts/put.ps1": "32145b0f7ffa8d82b844797ca3cb4321",
   ".claude/skills/자료정리/scripts/sort.ps1": "8ea8c333cc6caa9293cbdde886e921c4",
   ".claude/skills/자체점검/SKILL.md": "cfe5eeaebc28baa2661b01031aa12d0d",
-  ".claude/skills/처음시작/SKILL.md": "80a7ca99686df69f852c65971e86a5bb",
+  ".claude/skills/처음시작/SKILL.md": "0cc68895f77004dd09b88dfe96bac5bb",
   "CLAUDE.md": "f9d9b5366cc540c09cc13c21fdfe60d7",
   "README.md": "f7529637557a6b3c770e8485b15d4400",
   "_새반_틀/.claude/settings.json": "26c2464b1b97d230ce51bf89ab1e167c",

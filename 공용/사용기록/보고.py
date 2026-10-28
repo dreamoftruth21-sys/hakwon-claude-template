@@ -4,11 +4,12 @@
     py 공용/사용기록/보고.py 상태          보낼 기록 수 · 물을 문구 (JSON 한 줄). 스킬이 이것을 읽고 묻는다
     py 공용/사용기록/보고.py 보기          보낼 내용을 거른 뒤 그대로 보여 준다 (선생님이 보고 싶다고 할 때)
     py 공용/사용기록/보고.py 과목 <과목>   이 컴퓨터 선생님의 과목을 적는다 (영어 · 수학 · 국어 …). 보낼 때 같이 간다
-    py 공용/사용기록/보고.py 미루기        「다음에」를 골랐을 때. 다음에는 "○일간 보내지 않았습니다" 문구로 묻는다
+    py 공용/사용기록/보고.py 거부          「거부」를 골랐을 때. 다시 묻지 않고, 기록.py 도 기록을 멈춘다
+    py 공용/사용기록/보고.py 미루기        (옛 「다음에」) 일주일 뒤 "○일간 보내지 않았습니다" 문구로 묻는다
     py 공용/사용기록/보고.py 보내기        거른 뒤 수신주소.txt 의 웹 앱으로 보낸다. 성공하면 마지막 전송 시각을 적는다
 
 보내는 것 — 설치ID(이 컴퓨터를 구별하는 무작위 8자) · 템플릿 판 · 과목 · 기간 · 종류별 건수 · 스킬별 횟수
-  · 기록: 요청 · Claude 답 · 바뀐 규칙 · 오류
+  · 기록: 작업 기록(규칙 보완 전후 · 수정 · 생성한 파일 이름) · 오류 — 선생님이 입력한 채팅과 Claude 답은 기록하지도 보내지도 않는다
   · 자료: 지난 전송 뒤 만들거나 고친 문제 · 시험지의 data.json (반 폴더 안 `작업/` 아래). 플러그인 보완 · 업데이트에만 쓴다
   · 스킬: 선생님이 새로 만들었거나 고친 스킬 폴더의 파일 전부 (템플릿 판_지문과 대조해 찾는다)
 거르는 것 — 반 폴더 `학생.md` 의 학생 이름(→ 학생A · 학생B …) · 메일 주소 · 전화번호 · 윈도우 사용자 이름(경로).
@@ -36,6 +37,7 @@ SKILL_DIR = ROOT / ".claude" / "skills"
 MAX_RECORDS = 1500
 SHOW_RECORDS = 50           # 「보기」가 보여 주는 기록 수
 FIRST_ASK_DAYS = 3          # 설치 뒤 이 날수가 지나야 처음 「보내」를 묻는다
+ASK_EVERY_DAYS = 7          # 한 번 물은 뒤(보내 · 다음에 둘 다) 이 날수가 지나야 다시 묻는다 (2026-10-28 Danny — 일주일에 한 번)
 
 MAX_FILE = 300_000          # 자료 · 스킬 파일 하나 (글자)
 MAX_TOTAL = 3_000_000       # 한 번 보내는 자료 · 스킬 합계 (글자)
@@ -43,8 +45,8 @@ MAX_MATERIALS = 40          # 한 번에 보내는 자료 수
 SHARE_EXCLUDE = ("피드백", "채점", "결과", "답안", "배부본", "정정", "_설치확인")   # _설치확인 은 처음시작 4단계 샘플
 SKILL_EXT = (".md", ".py", ".js", ".json", ".txt", ".ps1", ".html", ".css", ".gs")
 
-MSG_FIRST = ("이 플러그인을 쓰면서 남은 기록(요청과 답 · 오류 · 만든 문제 · 만든 스킬)을 제작자에게 보내 주세요. "
-             "플러그인 보완과 업데이트에만 씁니다. 개인정보는 모으지 않습니다 — 학생 이름 · 연락처는 빼고 보냅니다.")
+MSG_FIRST = ("플러그인 보완과 업데이트를 위해 이 컴퓨터의 사용 기록(작업 기록 · 오류 · 새로 만든 자료 · 스킬)을 제작자에게 보내 주세요. "
+             "선생님 개인 정보, 학생 개인정보, 입력한 채팅은 보내지 않습니다. 거부하시면 다시 묻지 않습니다.")
 MSG_LATER = "기록을 %d일간 보내지 않았습니다. 지금 보낼까요?"
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -101,7 +103,7 @@ def load_records(after=""):
 
 
 def counts(recs):
-    c = {"요청": 0, "답": 0, "스킬": 0, "규칙변경": 0, "오류": 0}
+    c = {"스킬": 0, "규칙변경": 0, "수정": 0, "생성": 0, "오류": 0}
     skills = {}
     for r in recs:
         k = r.get("종류")
@@ -291,11 +293,21 @@ def too_early():
     return (datetime.date.today() - end).days < FIRST_ASK_DAYS
 
 
+def asked_recently(s):
+    """마지막으로 「보내」를 물은 날에서 ASK_EVERY_DAYS 가 안 지났으면 True."""
+    try:
+        last = datetime.date.fromisoformat(s["마지막질문"][:10])
+    except Exception:
+        return False
+    return (datetime.date.today() - last).days < ASK_EVERY_DAYS
+
+
 def pending():
     s = state()
     cutoff = setup_cutoff()
     recs = [r for r in load_records(s.get("마지막전송", ""))
-            if r.get("종류") == "오류" or r.get("시각", "") > cutoff]
+            if r.get("종류") not in ("요청", "답")              # 옛 판이 남긴 채팅 기록은 보내지 않는다
+            and (r.get("종류") == "오류" or r.get("시각", "") > cutoff)]
     return s, recs
 
 
@@ -308,17 +320,23 @@ def gather():
 
 
 def summary_line(c, mats, skills):
-    return ("이번에 보낼 것: 요청 %d건 · 답 %d건 · 바뀐 규칙 %d건 · 오류 %d건 · 만든 자료 %d개 · 새로 만들거나 고친 스킬 %d개"
-            % (c["요청"], c["답"], c["규칙변경"], c["오류"], len(mats), len(skills)))
+    return ("이번에 보낼 것: 작업 기록 %d건 · 오류 %d건 · 새로 만든 자료 %d개 · 새로 만들거나 수정한 스킬 %d개"
+            % (c["규칙변경"] + c["수정"] + c["생성"], c["오류"], len(mats), len(skills)))
 
 
 def cmd_status():
     s, recs, mats, skills = gather()
     c, by_skill = counts(recs)
-    out = {"설치ID": install_id(), "과목": s.get("과목"), "과목물음": not s.get("과목"),
+    out = {"설치ID": install_id(), "과목": s.get("과목"), "과목물음": not s.get("과목") and not s.get("거부"),
            "보낼것": c, "자료수": len(mats), "스킬수": len(skills), "스킬별": by_skill, "문구": None, "물음": "없음"}
+    if s.get("거부"):
+        out["미룸까닭"] = "선생님이 거부했다 — 묻지 않는다"
+        recs, mats, skills = [], [], []
     if (recs or mats or skills) and not s.get("마지막질문") and too_early():
         out["미룸까닭"] = "설치 뒤 %d일이 지나야 처음 묻는다" % FIRST_ASK_DAYS
+        recs, mats, skills = [], [], []
+    if (recs or mats or skills) and s.get("마지막질문") and asked_recently(s):
+        out["미룸까닭"] = "지난번에 물은 뒤 %d일이 지나야 다시 묻는다" % ASK_EVERY_DAYS
         recs, mats, skills = [], [], []
     if recs or mats or skills:
         dates = [r["시각"][:10] for r in recs] + [m["고친 시각"][:10] for m in mats]
@@ -413,6 +431,10 @@ def cmd_subject():
     print("과목을 %s(으)로 적었습니다." % sys.argv[2].strip()[:20])
 
 
+def cmd_refuse():
+    save_state(거부=True, 마지막답="거부", 마지막질문=datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+
+
 def cmd_defer():
     save_state(마지막답="다음에", 마지막질문=datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
     print("미뤘습니다. 다음 수업 준비 때 다시 묻습니다.")
@@ -445,7 +467,7 @@ def cmd_send():
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     sent = state().get("보낸스킬", {})
     sent.update(skill_hashes)
-    save_state(마지막전송=now, 마지막답="보내", 마지막질문=now[:16], 보낸스킬=sent)
+    save_state(마지막전송=now, 마지막답="보내", 마지막질문=now[:16], 보낸스킬=sent, 거부=False)
     print("보냈습니다 — 요청 %d건 · 답 %d건 · 바뀐 규칙 %d건 · 오류 %d건 · 만든 자료 %d개 · 스킬 %d개 "
           "(학생 이름 · 메일 · 전화번호는 걸렀습니다)."
           % (c["요청"], c["답"], c["규칙변경"], c["오류"], len(p["자료"]), len(p["스킬"])))
@@ -453,5 +475,5 @@ def cmd_send():
 
 if __name__ == "__main__":
     c = sys.argv[1] if len(sys.argv) > 1 else "상태"
-    {"상태": cmd_status, "보기": cmd_show, "과목": cmd_subject, "미루기": cmd_defer, "보내기": cmd_send}.get(
+    {"상태": cmd_status, "보기": cmd_show, "과목": cmd_subject, "미루기": cmd_defer, "거부": cmd_refuse, "보내기": cmd_send}.get(
         c, lambda: print(__doc__))()

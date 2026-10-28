@@ -108,22 +108,12 @@ def build_record(ev, root):
     cwd = pathlib.Path(ev.get("cwd") or ".").resolve()
     ban = cwd.name if cwd != root else ""   # 반 폴더에서 열었으면 그 이름, 루트면 빈 칸
 
-    if event == "UserPromptSubmit":
-        text = (ev.get("prompt") or "").strip()
-        if not text:
-            return None
-        return {"종류": "요청", "반": ban, "내용": clip(text)}
+    # 선생님이 입력한 채팅(UserPromptSubmit)과 Claude 의 답(Stop)은 기록하지 않는다 (2026-10-28 Danny)
 
     if event == "PostToolUseFailure":
         err = ev.get("error") or ev.get("tool_response") or ""
         return {"종류": "오류", "반": ban, "도구": tool, "명령": clip((ev.get("tool_input") or {}).get("command"), 500),
                 "내용": clip(str(err), MAX_ERROR)}
-
-    if event == "Stop":
-        text = last_answer(ev)
-        if not text:
-            return None
-        return {"종류": "답", "반": ban, "내용": clip(text, MAX_ANSWER)}
 
     if event != "PostToolUse":
         return None
@@ -135,7 +125,11 @@ def build_record(ev, root):
         fp = inp.get("file_path") or ""
         r = rel(root, fp)
         if not is_rule_file(r):
-            return None
+            if not r or r.startswith("공용/사용기록/"):
+                return None
+            # 작업 기록 — 파일 이름만 (내용은 적지 않는다)
+            made = tool == "Write" and isinstance(resp, dict) and resp.get("type") == "create"
+            return {"종류": "생성" if made else "수정", "반": ban, "파일": r}
         rec = {"종류": "규칙변경", "반": ban, "파일": r, "도구": tool}
         if tool == "Edit":
             rec["전"] = clip(inp.get("old_string"), MAX_RULE)
@@ -172,6 +166,11 @@ def main():
         root = find_root(ev.get("cwd") or pathlib.Path.cwd())
         if root is None:
             return
+        try:   # 선생님이 「거부」를 골랐으면 기록하지 않는다
+            if json.loads((root / "공용" / "사용기록" / "상태.json").read_text(encoding="utf-8")).get("거부"):
+                return
+        except Exception:
+            pass
         rec = build_record(ev, root)
         if rec is None:
             return

@@ -28,7 +28,8 @@ body{margin:0;font-family:"Malgun Gothic","맑은 고딕",sans-serif;color:#1f2a
 .brand{font-size:17pt;font-weight:800;color:#163a5c;letter-spacing:.5pt}
 .brand span{color:#3A78B5}
 .who{font-size:11pt;font-weight:700;text-align:right;margin-left:auto}
-.who .sc{font-size:20pt;font-weight:800;color:#1F4E79;letter-spacing:.5pt}
+.who u{text-decoration:none;border-bottom:1pt solid #2b2317;padding:0 4mm}
+.who{white-space:nowrap;flex-shrink:0;margin-left:6mm}
 .sec{margin-top:2.8mm}
 .row{display:flex;gap:4mm;align-items:stretch;break-inside:avoid}
 .row .sec{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -88,9 +89,10 @@ def main():
             f"<p><span class='lab'>정답 근거</span>{q['key']}</p>"
             f"<p><span class='lab'>보완 방법</span>{q['next']}</p></div>")
     doc = f"""<!doctype html><meta charset="utf-8"><title>학생용 결과 피드백</title><style>{CSS}</style><body>{brand.watermark(front=True)}
-<div class="top"><div><div class="year">{html.escape(D['title_line'])}</div>
- <div class="brand">{html.escape(D['brand'])} <span>{html.escape(D['subject'])}</span></div></div>
- <div class="who">{html.escape(D['name'])}<br><span class="sc">{D['score']}점</span></div>{brand.header_logo('10mm', 'margin-left:5mm')}</div>
+<div style="text-align:right;line-height:0;margin-bottom:1.5mm">{brand.header_logo('8mm')}</div>
+<div class="year">{html.escape(D['title_line'])}</div>
+<div class="top"><div><div class="brand">{html.escape(D['brand'])} <span>{html.escape(D['subject'])}</span></div></div>
+ <div class="who">{html.escape(D.get('school', ''))} &nbsp;<u>{html.escape(str(D.get('grade', '')))}</u>&nbsp;학년 &nbsp;/&nbsp; 이름 &nbsp;<u>{html.escape(D.get('spaced') or ' '.join(D['name']))}</u></div></div>
 <div class="sec"><div class="bar"><div class="pill">결과 요약</div><div class="t">점수와 오답 현황</div></div>
  <div class="box">
   <div class="stat"><div><span class="k">점수</span><span class="v">{D['score']} / {total}</span></div>

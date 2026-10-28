@@ -20,7 +20,7 @@ py 공용/build/단어장/build.py <data.json> [--out 폴더]
  "grade_label": "고1",
  "title": "WORDS &amp; EXPRESSIONS",
  "title_sub": "2026학년도 2학기 중간고사 대비",
- "footer": "카이젠 나성 캠퍼스 · 세종예고 1학년",
+ "footer": "세종예고 1학년",
  "color": "#1F4E79",
  "layout": "half",                     // half = 좌우 두 표 / full = 한 표 (덧붙일 열이 2개면 full 권장)
  "columns": [{"key": "confuse", "label": "혼동어", "prefix": "↔ "}],
@@ -55,7 +55,7 @@ py 공용/build/단어장/build.py <data.json> [--out 폴더]
 PART 띠 · 목차 · 연속 흐름 · 쪽번호. 지문별 한 쪽 형식이 아니라 한 권으로 이어진다.
 ```json
 {"layout": "book", "school": "한솔고", "name": "한솔고2_2학기중간_단어장2권",
- "title": "한솔고 2학년 … 단어장 <span style=\"font-size:11pt\">2권</span>", "sub": "…", "namebar": "카이젠 어학원 나성캠퍼스",
+ "title": "한솔고 2학년 … 단어장 <span style=\"font-size:11pt\">2권</span>", "sub": "…", "namebar": "(선택 — 없으면 반 CLAUDE.md · 우리학원.md 의 학원 표기)",
  "note": "첫 쪽 안내 상자 HTML (선택)", "footer": "…", "syn": false,
  "parts": [{"title": "수능특강 Light 11강", "short": "11강",
             "groups": [{"title": "11강 1번", "items": [{"w": "…", "m": "…", "syn": "…", "ant": "…"}]}]}]}

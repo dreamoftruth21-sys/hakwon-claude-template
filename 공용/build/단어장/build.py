@@ -16,6 +16,7 @@ import sys
 import tempfile
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+from core import brand  # noqa: E402
 from core import checks as C  # noqa: E402
 from core import render as R  # noqa: E402
 from core import sources as S  # noqa: E402
@@ -75,7 +76,8 @@ def load(p):
         for k in ("name", "title", "parts"):
             if k not in d:
                 raise SystemExit("data.json 에 '%s' 가 없다" % k)
-        prof = S.profile(d["school"]).get("wordlist", {}) if d.get("school") else {}
+        d.setdefault("namebar", brand.name(p))      # 이름 칸 왼쪽의 학원 표기 — 반 CLAUDE.md → 우리학원.md
+        prof =S.profile(d["school"]).get("wordlist", {}) if d.get("school") else {}
         return d, prof
     for k in ("name", "source_label", "grade_label", "title", "footer", "sections"):
         if k not in d:
@@ -343,7 +345,7 @@ def book_html(d):
             '<div class="sub">%s</div>'
             '<div class="namebar"><span>%s</span><span>이름 ______________</span></div>'
             '%s%s%s<div class="foot">%s</div></body>'
-            % (BOOK_CSS, d["title"], E(d.get("sub", "")), E(d.get("namebar", "카이젠 어학원 나성캠퍼스")),
+            % (BOOK_CSS, d["title"], E(d.get("sub", "")), E(d["namebar"]),
                note, toc, body, E(d.get("footer", ""))))
 
 

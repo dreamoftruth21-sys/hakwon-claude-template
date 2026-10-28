@@ -5,9 +5,13 @@
 
 파일이 없으면 빈 글자를 돌려준다 — 로고 없이 예전처럼 만든다.
 쓰는 빌더: 모의고사(실전 모의고사 · 약점 확인 시험) · 피드백(학생용 · 부모용).
+
+name(data.json 경로) — 학원 표기. 반 CLAUDE.md 를 먼저, 없으면 우리학원.md. 모의고사 바닥글 · 단어장 이름 칸이 쓴다.
 """
 import base64
 import pathlib
+import re
+import sys
 
 LOGO_DIR = pathlib.Path(__file__).resolve().parents[2] / "로고"
 WATERMARK = LOGO_DIR / "워터마크.png"
@@ -46,3 +50,31 @@ def header_logo(height="9mm", style=""):
 
 def enabled():
     return WATERMARK.exists() or HEADER.exists()
+
+
+# ── 학원 표기 (예: 나성카이젠) ── 여러 캠퍼스를 다니는 선생님은 반마다 다르다 (2026-10-29)
+ROOT = LOGO_DIR.parents[1]                       # 템플릿 루트 (공용/ 의 위)
+OUR = ROOT / "공용" / "규칙" / "우리학원.md"
+_CLASS_LINE = re.compile(r"^캠퍼스:.*?학원 표기:\s*(.+?)\s*$", re.M)        # 반 CLAUDE.md 머리
+_OUR_LINE = re.compile(r"^- 학원 표기:\s*(.+?)\s*$", re.M)                   # 우리학원.md 「학원 정보」
+
+
+def _value(m):
+    v = m.group(1) if m else ""
+    return "" if not v or v[0] in "([" or "반마다" in v else v
+
+
+def name(data_path):
+    """data.json 이 든 반 폴더의 CLAUDE.md `학원 표기:` → 없으면 공용/규칙/우리학원.md → 없으면 빈 글자."""
+    d = pathlib.Path(data_path).resolve().parent
+    while d != ROOT and ROOT in d.parents:
+        f = d / "CLAUDE.md"
+        if f.exists():
+            v = _value(_CLASS_LINE.search(f.read_text(encoding="utf-8")))
+            if v:
+                return v
+        d = d.parent
+    v = _value(_OUR_LINE.search(OUR.read_text(encoding="utf-8"))) if OUR.exists() else ""
+    if not v:
+        print("학원 표기를 찾지 못했다 — 반 CLAUDE.md 「캠퍼스 · 학원 표기」나 공용/규칙/우리학원.md 를 채운다", file=sys.stderr)
+    return v

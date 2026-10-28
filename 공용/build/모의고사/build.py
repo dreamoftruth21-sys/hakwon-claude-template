@@ -137,6 +137,7 @@ def load(data_path):
     for k in ("school", "name", "title", "subtitle", "guide", "footer", "passages", "questions"):
         if k not in d:
             raise SystemExit("data.json 에 '%s' 가 없다" % k)
+    d.setdefault("brand", brand.name(data_path))    # 바닥글의 학원 표기 — 반 CLAUDE.md → 우리학원.md
     for q in d["questions"]:
         miss = [k for k in REQ_Q if k not in q]
         q.setdefault("kind", "choice")
@@ -312,7 +313,7 @@ def page_html(Q, d, prof, answers=False):
             shown.add(k)
         b.append(q_html(q, d, answers, prof))
     b.append("</div>")
-    b.append('<div class="foot">%s · 카이젠 나성 캠퍼스</div>' % d["footer"])
+    b.append('<div class="foot">%s</div>' % " · ".join(x for x in (d["footer"], d["brand"]) if x))
     if answers:
         b.append('<div class="pb"></div><h2>정답 및 해설</h2>')
         b.append('<div class="lg">배점 표시 &nbsp;%s</div>' % prof["legend"])

@@ -1,7 +1,7 @@
 {
- "판": "2026-10-27",
- "태그": "판-2026-10-27",
- "zip": "https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/%ED%8C%90-2026-10-27.zip",
+ "판": "2026-10-28",
+ "태그": "판-2026-10-28",
+ "zip": "https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/%ED%8C%90-2026-10-28.zip",
  "파일수": 96,
  "파일": {
   ".claude/agents/검증.md": "f469748fc6fd0cbddf37013f1cb6463a",
@@ -14,7 +14,7 @@
   ".claude/skills/내신피드백/SKILL.md": "77253c08fbaa21d6039d6b1045dd3d37",
   ".claude/skills/단어시험지/SKILL.md": "1f955b1ebe63eecb11d57299e45e49d9",
   ".claude/skills/모의고사출제/SKILL.md": "a919f77426285627a0942e1fef4a6a06",
-  ".claude/skills/서술형채점/SKILL.md": "c6ce2188e453adf3802546646c0a102f",
+  ".claude/skills/서술형채점/SKILL.md": "15d8d005fd02720f6dbb17b034b0244b",
   ".claude/skills/수업계획/SKILL.md": "8bb6b41579c76432e533211bd6bdedeb",
   ".claude/skills/수업정리/SKILL.md": "286c9c454099625ce8b1b311d9964383",
   ".claude/skills/수업준비/SKILL.md": "bc365e9323e6c9f635242f5b30c5146e",
@@ -22,7 +22,7 @@
   ".claude/skills/쉬운말번역/SKILL.md": "805af16b38b10bc0aa7c95cdc74be1ef",
   ".claude/skills/쉬운말번역/scripts/build.py": "6d95ef86796ddbacfd8c37e464db1e71",
   ".claude/skills/쉬운말번역/scripts/extract.py": "b28cf30f19dbaca20c90cf4faaeec2eb",
-  ".claude/skills/시험지분석/SKILL.md": "a947dde59d60a8fdf8ccea76829df079",
+  ".claude/skills/시험지분석/SKILL.md": "daecf7822084073cbdc44da5edecfbe1",
   ".claude/skills/약점보완/SKILL.md": "921fef224e9d0b4ef6521c4859fb314f",
   ".claude/skills/온라인배포/SKILL.md": "53feeb9de6a10cf246e1c05b62004cdf",
   ".claude/skills/자료정리/SKILL.md": "1a5d05c981ff265ad39f94ed3f49bc69",

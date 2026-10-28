@@ -7,6 +7,8 @@ description: 온라인 채점 시트에 쌓인 서술형·단어 쓰기 답(선�
 
 구조는 `공용/온라인채점/README.md` "선생님 메뉴 · 탭". **점수를 확정하지 않는다** — 제안만 만들고, 선생님이 시트 `서술형 채점` 탭 `득점 ✎` 칸에 넣는다.
 
+**채점 판단(3단계 제안 쓰기)은 Opus 에이전트(Agent 도구 `model: opus`)에 맡긴다.** 메인 세션은 1 · 2단계에서 답과 근거를 모아 넘기고, 받은 제안을 4단계대로 저장한다 (루트 CLAUDE.md 「모델 · 에이전트 쓰는 법」).
+
 ## 1. 채점 대기 답 가져오기
 
 - 드라이브 도구로 `온라인채점` 스프레드시트를 찾아(`search_files` · `title = '온라인채점'`) xlsx 로 받는다(`download_file_content`, exportMimeType `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`). 결과가 크면 저장된 파일을 python(openpyxl)으로 연다

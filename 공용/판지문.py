@@ -33,6 +33,7 @@ INCLUDE = [
     r"^공용/온라인채점/apps_script/(Code\.gs|Index\.html|appsscript\.json|\.claspignore)$",
     r"^공용/사용기록/([^/]+\.py|수신주소\.txt)$",
     r"^공용/정리/.+",
+    r"^공용/설치/.+",
     r"^공용/판지문\.py$",
     r"^공용/로고/[^/]+\.png$",                  # 학원 로고 — 선생님이 바꿨으면 갱신이 충돌로 묻는다
     r"^_새반_틀/.+",

@@ -29,24 +29,17 @@ description: 이 템플릿을 처음 설치한 컴퓨터에서 설치 · 여기�
 
 ## 1. 설치 (프로그램 깔기)
 
-1. 있는지 본다: `py --version` · `node --version` · `clasp --version`
-2. 없는 것만 설치한다. 설치 전에 "설치 창이 뜨면 「예」를 눌러 주세요"라고 말한다.
+1. 먼저 말한다: "필요한 프로그램을 한 번에 깔겠습니다. 윈도우 「예」 창이 두 번쯤 뜨면 「예」를 눌러 주세요. LibreOffice 는 내려받기가 커서 조금 걸립니다."
+2. 한 명령으로 깐다 — 있는 것은 건너뛴다. 오래 걸리니 백그라운드로 돌리고 끝나면 결과를 본다:
    ```
-   winget install -e --id Python.Python.3.12 --accept-source-agreements --accept-package-agreements
-   winget install -e --id OpenJS.NodeJS.LTS --accept-source-agreements --accept-package-agreements
+   powershell -NoProfile -ExecutionPolicy Bypass -File 공용/설치/프로그램설치.ps1
    ```
+   Python(사용자 계정) · Node · LibreOffice · Python 모듈 · 크로미움 · clasp · docx 를 깔고, 마지막에 `== 결과 ==` 아래 항목마다 「있음 · 설치함 · 실패」를 적는다.
+   무엇이 있는지만 볼 때는 끝에 `-Check`.
+3. `실패` 가 있으면 그 항목만 다시 돌린다(같은 명령 — 있는 것은 건너뛴다). LibreOffice 는 단어 시험지(DOCX → PDF)에만 쓰니, 계속 실패하면 "나중에 다시 깔겠습니다"라고 하고 넘어간다.
    설치 직후에는 PATH 가 지금 창에 반영되지 않는다. 다음 명령 앞에 붙인다:
    `$env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')`
    `py` 가 안 잡히면 `$env:LOCALAPPDATA\Programs\Python\Launcher\py.exe` 를 쓴다.
-3. 모듈 · 브라우저 · clasp · 단어시험지용 도구:
-   ```
-   py -m pip install pymupdf playwright pdfplumber openpyxl python-docx olefile
-   py -m playwright install chromium
-   npm install -g @google/clasp docx
-   [Environment]::SetEnvironmentVariable('NODE_PATH', (npm root -g), 'User'); $env:NODE_PATH = (npm root -g)
-   winget install -e --id TheDocumentFoundation.LibreOffice --accept-source-agreements --accept-package-agreements
-   ```
-   LibreOffice 는 단어 시험지(DOCX → PDF)에만 쓴다. 내려받기가 커서 5분쯤 걸린다고 미리 말한다.
 4. 확인 — 샘플 시험지를 만들어 본다. PDF 2개가 나오면 끝이다.
    ```
    py 공용/build/모의고사/build.py 공용/build/모의고사/예시/샘플_3문항.json --out <스크래치 폴더>

@@ -14,7 +14,7 @@
 https://github.com/dreamoftruth21-sys/hakwon-claude-template 여기 있는 것 이 폴더에 설치해줘
 ```
 
-5. 설치가 끝나면 Claude 가 폴더를 다시 열라고 안내합니다. 다시 열고 「처음 시작」이라고 보내면, 그다음부터는 Claude 가 한 단계씩 안내하고 필요한 것을 묻습니다.
+5. 설치 파일을 풀면 Claude 가 바로 「처음 시작」으로 넘어가 한 단계씩 안내하고 필요한 것을 묻습니다. 멈춰 있으면 「처음 시작」이라고 보냅니다.
 
 ## Claude 가 설치할 때 할 일 (Claude 용 안내)
 
@@ -30,7 +30,7 @@ https://github.com/dreamoftruth21-sys/hakwon-claude-template 여기 있는 것 �
 - 이 저장소의 zip(`https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/heads/main.zip`)을 PowerShell `Invoke-WebRequest` 로 스크래치 폴더에 내려받아 압축을 풀고, `hakwon-claude-template-main/` 안의 내용을 열린 폴더 바로 아래로 옮긴다. git 은 쓰지 않는다.
 - 선생님 파일 · 폴더와 이름이 같은 것(`CLAUDE.md` · `README.md` · `공용` · `.claude` 등)이 있으면 덮어쓰지 말고 멈춰서 알린다.
 
-**3.** 다 풀면 "설치 파일을 풀었습니다. 폴더를 다시 열어 주세요(왼쪽 `</>` → 같은 「학원수업」 폴더). 다시 열고 「처음 시작」이라고 보내 주세요." 라고 말하고 멈춘다. 다시 열면 루트 `CLAUDE.md` 가 `처음시작` 스킬을 시작한다.
+**3.** 다 풀면 폴더를 다시 열게 하지 않고 바로 이어 간다: 방금 푼 루트 `CLAUDE.md` 와 `.claude/skills/처음시작/SKILL.md` 를 읽고, 그 스킬 0단계부터 한다(스킬 목록에 아직 안 보여도 파일을 직접 읽고 따른다). 선생님께는 "설치 파일을 풀었습니다. 이어서 처음 시작을 하겠습니다"라고 한 줄만 말한다. 이 세션 모델이 Sonnet 이 아니면 처음시작 0단계의 모델 확인을 먼저 한다.
 
 ## 들어 있는 것
 

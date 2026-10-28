@@ -1,15 +1,15 @@
 {
- "판": "2026-10-28-3",
- "태그": "판-2026-10-28-3",
- "zip": "https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/%ED%8C%90-2026-10-28-3.zip",
- "파일수": 99,
+ "판": "2026-10-28-4",
+ "태그": "판-2026-10-28-4",
+ "zip": "https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/%ED%8C%90-2026-10-28-4.zip",
+ "파일수": 100,
  "파일": {
   ".claude/agents/검증.md": "f469748fc6fd0cbddf37013f1cb6463a",
   ".claude/agents/원본찾기.md": "d108059318683fbd0c9383c991d96ed9",
   ".claude/agents/자료분류.md": "24011e7497d36b1a5ec18ee89ec26b25",
   ".claude/prompts/reset-handoff.md": "bde127686b3dc9e568aa2f334a3629f2",
   ".claude/settings.json": "55ec31e7c8643fe41da96c2032bda5c1",
-  ".claude/skills/갱신/SKILL.md": "ab0cbcd0e04786d70c8342b6cc8f5a25",
+  ".claude/skills/갱신/SKILL.md": "2a3df9d6b199f2984564b16abb345a22",
   ".claude/skills/교재만들기/SKILL.md": "a734cdebb16cf1b0cc587d27ecddf102",
   ".claude/skills/내신피드백/SKILL.md": "77253c08fbaa21d6039d6b1045dd3d37",
   ".claude/skills/단어시험지/SKILL.md": "1f955b1ebe63eecb11d57299e45e49d9",
@@ -29,9 +29,9 @@
   ".claude/skills/자료정리/scripts/put.ps1": "32145b0f7ffa8d82b844797ca3cb4321",
   ".claude/skills/자료정리/scripts/sort.ps1": "8ea8c333cc6caa9293cbdde886e921c4",
   ".claude/skills/자체점검/SKILL.md": "cfe5eeaebc28baa2661b01031aa12d0d",
-  ".claude/skills/처음시작/SKILL.md": "5051804bf5e6ced5e93e5c43e72d7d0a",
+  ".claude/skills/처음시작/SKILL.md": "80a7ca99686df69f852c65971e86a5bb",
   "CLAUDE.md": "f9d9b5366cc540c09cc13c21fdfe60d7",
-  "README.md": "26ea5e4dd3c2005832630ffdb5057d0d",
+  "README.md": "f7529637557a6b3c770e8485b15d4400",
   "_새반_틀/.claude/settings.json": "26c2464b1b97d230ce51bf89ab1e167c",
   "_새반_틀/CLAUDE.md": "f887f9b144833065df127cd21e66d18f",
   "_새반_틀/수업일지.md": "bca457a8d4c967ba5bd8c80cd8f7b19b",
@@ -92,6 +92,7 @@
   "공용/사용기록/기록.py": "2644498e804f632682eb5007fcd3ccb6",
   "공용/사용기록/보고.py": "32dcc4bcd4c52924043f8c6bad729214",
   "공용/사용기록/수신주소.txt": "0848067a1711c1e43fc05e146e3ad01c",
+  "공용/설치/프로그램설치.ps1": "5949de6df039a9c70d3bc3c4bbf6e34a",
   "공용/온라인채점/apps_script/.claspignore": "99686c5f0e05ee346bb0a0961adbac20",
   "공용/온라인채점/apps_script/Code.gs": "71acbd610d41009fb8a27f0ca6b2e48e",
   "공용/온라인채점/apps_script/Index.html": "bde878c5742541e96b5b50ec38c0c41e",
@@ -102,6 +103,6 @@
   "공용/온라인채점/해설넣기.py": "6bc560d5b4aa9ece8a84e894c2eedebd",
   "공용/온라인채점/해설재료.py": "f4eb344798edf3c259b48f1f44391618",
   "공용/정리/처음정리.py": "dfe07afb00bd401a2fd75cca316a0c3a",
-  "공용/판지문.py": "7f13d4b22e6bbf56b8c7340bcd4c0412"
+  "공용/판지문.py": "821c080ffd0bca04a9474f119906bb5f"
  }
 }

@@ -38,14 +38,22 @@ description: 이 템플릿을 처음 설치한 컴퓨터에서 설치 · 여기�
 
 ## 1. 설치 (프로그램 깔기)
 
-1. 먼저 말한다: "필요한 프로그램을 한 번에 깔겠습니다. 윈도우 「예」 창이 두 번쯤 뜨면 「예」를 눌러 주세요. LibreOffice 는 내려받기가 커서 조금 걸립니다."
-2. 한 명령으로 깐다 — 있는 것은 건너뛴다. 오래 걸리니 백그라운드로 돌리고 끝나면 결과를 본다:
+1. 먼저 말한다: "필요한 프로그램을 깔겠습니다. 윈도우 「예」 창이 뜨면 「예」를 눌러 주세요. 가장 큰 LibreOffice 는 뒤에서 따로 받으면서 다음 단계를 진행하겠습니다."
+2. 한 명령으로 깐다 — 있는 것은 건너뛴다. 백그라운드로 돌리고 끝나면 결과를 본다:
    ```
    powershell -NoProfile -ExecutionPolicy Bypass -File 공용/설치/프로그램설치.ps1
    ```
-   Python(사용자 계정) · Node · LibreOffice · Python 모듈 · 크로미움 · clasp · docx 를 깔고, 마지막에 `== 결과 ==` 아래 항목마다 「있음 · 설치함 · 실패」를 적는다.
+   Python(사용자 계정) · Node · Python 모듈(sympy 포함) · 크로미움 · clasp · docx · katex 를 깔고, 마지막에 `== 결과 ==` 아래 항목마다 「있음 · 설치함 · 실패」를 적는다. LibreOffice 는 여기서 깔지 않고 「따로」라고 적는다.
    무엇이 있는지만 볼 때는 끝에 `-Check`.
-3. `실패` 가 있으면 그 항목만 다시 돌린다(같은 명령 — 있는 것은 건너뛴다). LibreOffice 는 단어 시험지(DOCX → PDF)에만 쓰니, 계속 실패하면 "나중에 다시 깔겠습니다"라고 하고 넘어간다.
+3. `실패` 가 있으면 그 항목만 다시 돌린다(같은 명령 — 있는 것은 건너뛴다).
+   **LibreOffice 가 「따로」면** 이어서 이 명령을 백그라운드로 돌리고, **기다리지 않고** 4번과 2단계로 간다(윈도우 설치 관리자는 한 번에 하나만 깔아서 위 명령이 끝난 뒤에 돌린다):
+   ```
+   powershell -NoProfile -ExecutionPolicy Bypass -File 공용/설치/리브레오피스설치.ps1
+   ```
+   선생님께 한 줄: "LibreOffice(350MB 남짓)는 뒤에서 받고 있습니다. 그동안 자료 정리를 하겠습니다. 진행 상황은 중간중간 알려 드리겠습니다."
+   - **진행 알리기** — 2단계를 하는 동안 선생님께 답할 때마다 `Get-Content "$env:TEMP\LibreOffice설치_진행.txt"` 한 줄을 읽어, 지난번과 달라졌으면 답 끝에 그대로 한 줄 붙인다(예: 「LibreOffice 내려받는 중 120 / 358 MB (34%) · 3 분 지남」). 선생님이 "얼마나 됐어?"라고 물으면 바로 읽어 준다.
+   - 「예」 창 줄이 나오면 그때 "윈도우 「예」 창이 떴으면 눌러 주세요"를 따로 말한다. 「멈춤?」이 붙으면 인터넷 연결을 확인해 달라고 한다.
+   - 끝나면(백그라운드 작업 알림) 「LibreOffice: 설치함」을 한 줄 알린다. 「실패」면 같은 명령을 한 번 더 백그라운드로 돌린다. LibreOffice 는 단어 시험지(DOCX → PDF)에만 쓰니, 두 번 실패하면 "나중에 다시 깔겠습니다"라고 하고 넘어간다.
    설치 직후에는 PATH 가 지금 창에 반영되지 않는다. 다음 명령 앞에 붙인다:
    `$env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')`
    `py` 가 안 잡히면 `$env:LOCALAPPDATA\Programs\Python\Launcher\py.exe` 를 쓴다.

@@ -18,5 +18,23 @@
   "legend": "<span class=\"lgi\"><span class=\"p3\">&#9312;</span> 3점</span><span class=\"lgi\"><span class=\"p4\">&#9312;</span> 4점</span>",
   "sol_numbers": "forbid",
   "근거": "설치 확인용 예시 규격 (3문항 10점). 실제 학교 규격은 시험지분석 스킬이 그 학교 기출로 만든다 — 문항 수 · 배점표(blueprint) · 서답형(written) · 그 학교가 안 내는 발문(stem_forbidden) · 선택지 언어(options_no_hangul)"
+ },
+ "math_exam": {
+  "total": 30,
+  "choice": {"count": 6, "total": 20},
+  "written": {"count": 2, "total": 10},
+  "points": {
+   "blueprint": [3, 3, 4, 4, 3, 3, 4, 6]
+  },
+  "answer_same_max": 2,
+  "no_triple": true,
+  "written_label": "서답형",
+  "pt_format": "[%s점]",
+  "essay_space_mm": 45,
+  "student_absent": ["정답", "해설", "모범답안", "채점", "✔"],
+  "student_forbidden": [],
+  "answer_suffix": "_답지",
+  "answer_title_suffix": " &nbsp;[정답 및 해설]",
+  "근거": "수학 빌더(공용/build/수학) 설치 확인용 예시 규격 (선택형 6 · 서답형 2 · 30점). 실제 학교 규격은 시험지분석 스킬이 그 학교 기출로 만든다 — 선택형·서답형 문항 수(choice/written.count, [최소, 최대] 도 된다) · 배점표(blueprint) · 서술형 풀이 칸 높이(essay_space_mm)"
  }
 }

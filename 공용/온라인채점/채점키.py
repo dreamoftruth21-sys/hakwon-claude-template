@@ -5,6 +5,8 @@
 - 정답은 인쇄본 기준이다. data.json 의 target(선택지 회전 뒤 번호)을 쓰고,
   같은 반 배부/ 의 <name>_답지.pdf 해설부 "N. 정답 ③" 과 대조해 하나라도 다르면 멈춘다.
 - 학생 목록은 <반>/학생.md 의 "- **이름**" 줄에서 읽는다.
+- 수학 빌더(공용/build/수학) data.json("subject": "math")도 읽는다 — 선택형 · 수 단답형은 자동 채점
+  (같은 값의 표기 9/8 · 1.125 · 8분의 9 를 인정 답으로 펼친다), 서술형은 입력만 (math_written_item).
 - 결과: 공용/온라인채점/채점키/<시험ID>_채점키.json
   이 폴더는 구글 드라이브와 동기화되므로, 웹앱이 파일명으로 찾아 읽는다.
 """
@@ -68,8 +70,9 @@ def printed_key(school, name):
             for n, c in re.findall(r"(?m)^(\d+)\.\s*정답\s*([①②③④⑤])", text)}, hits[0]
 
 
-def page_of(school, name, labels):
-    """시험지 PDF에서 각 문항이 처음 나오는 쪽. 번호가 순서대로 나올 때만 잡는다 (본문 속 연도·숫자 무시)."""
+def page_of(school, name, labels, wl="서답형"):
+    """시험지 PDF에서 각 문항이 처음 나오는 쪽. 번호가 순서대로 나올 때만 잡는다 (본문 속 연도·숫자 무시).
+    wl: 서답형 번호 앞말 (수학은 학교 설정의 written_label)."""
     hits = list((ROOT / school).rglob(f"배부/{name}.pdf"))
     if not hits:
         print(f"  시험지 PDF 없음 → 쪽 경계 표시 없이 만든다: {name}.pdf")
@@ -77,8 +80,8 @@ def page_of(school, name, labels):
     import pymupdf
     pages, k = {}, 0
     for pno, p in enumerate(pymupdf.open(hits[0]), 1):
-        for m in re.finditer(r"(?m)^(?:(\d+)\.\s|(서답형)\s*(\d+))", p.get_text()):
-            got = f"서답형 {m.group(3)}" if m.group(2) else m.group(1)
+        for m in re.finditer(rf"(?m)^(?:(\d+)\.\s|({re.escape(wl)})\s*(\d+))", p.get_text()):
+            got = f"{wl} {m.group(3)}" if m.group(2) else m.group(1)
             if k < len(labels) and got == labels[k]:
                 pages[labels[k]] = pno
                 k += 1
@@ -133,6 +136,49 @@ def written_item(q):
             "criteria": (f"[조건] {cond} " if cond else "") + crit}
 
 
+def math_mods():
+    """수학 빌더(공용/build/수학)의 tex · verify 를 빌려 온다."""
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "build" / "수학"))
+    import tex, verify
+    return tex, verify
+
+
+def math_written_item(q):
+    """수학 서답형 (subject: math).
+    단답형: 답이 수(정수 · 분수 · 유한소수)면 같은 값의 여러 표기(9/8 · 1.125 · 8분의 9 …)를 인정 답으로 펼쳐 자동 채점.
+            수가 아니면(근호 · 식 · 좌표) 입력만 받는다. 더 인정할 표기는 data.json 의 accept(글자 목록)에 적는다.
+    서술형: 입력만 받는다 — 채점 단계(steps) · 채점 기준(criteria)은 시트 '서술형 채점' 탭으로 간다.
+    휴대폰 화면에는 수식 · 그림이 나오지 않는다. 답 · 기준은 √ · a/b · ² 같은 글자로 어림해 넣는다."""
+    tex, verify = math_mods()
+    ans = tex.phone(q.get("answer", ""))
+    if q["kind"] == "short":
+        forms = []
+        try:
+            v = verify.py_value(q["value"]) if "value" in q else verify.tex_value(q.get("answer", ""))
+            forms = verify.accept_forms(v)
+        except Exception:
+            pass
+        extra = [a for a in (q.get("accept") or []) if isinstance(a, str)]
+        if forms or extra:
+            acc = sorted({norm_text(a) for a in forms + extra + [ans] if a})
+            return {"mode": "auto", "ans": ans, "parts": [{"label": "", "pt": q["pt"], "accept": acc}]}
+        print(f"  서답형 {q['n']}: 답 {ans} 은 수가 아니라 자동 채점하지 않는다 (인정 답은 accept 에 적는다)")
+    steps = " / ".join(f"{i + 1}) {tex.phone(s['desc'])} ({s['pt']}점)" for i, s in enumerate(q.get("steps") or []))
+    crit = tex.phone(q["criteria"] if isinstance(q.get("criteria"), str) else " / ".join(q.get("criteria") or []))
+    return {"mode": "essay" if q["kind"] == "essay" else "text", "ans": ans,
+            "lines": int(q.get("lines") or (1 if q["kind"] == "short" else 3)),
+            "criteria": " ".join(x for x in (f"[단계] {steps}" if steps else "", crit) if x)}
+
+
+def math_label(d):
+    """수학은 학교 설정(math_exam.written_label)의 서답형 이름을 쓴다 — 인쇄본 번호와 같아야 쪽을 찾는다."""
+    p = Path(__file__).resolve().parents[1] / "build" / "학교" / f"{d.get('school', '')}.json"
+    if p.exists():
+        return (json.loads(p.read_text(encoding="utf-8")).get("math_exam") or {}).get("written_label", "서답형")
+    return "서답형"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("data")
@@ -153,28 +199,32 @@ def main():
     if target and len(target) != len(qs):
         raise SystemExit(f"target {len(target)}개와 선택형 {len(qs)}문항 수가 다름")
 
+    math = d.get("subject") == "math"     # 수학 빌더 data.json — 유형은 type, 출처 칸은 단원(unit)
+    wl = math_label(d) if math else "서답형"
     items = []
     for i, q in enumerate(qs):
         if q["n"] != i + 1:
             raise SystemExit(f"문항 번호가 순서대로가 아님: {q['n']}")
         ans = (target[i] if target else q["ans"]) + 1
         items.append({"n": q["n"], "label": str(q["n"]), "mode": "choice", "ans": ans, "pt": q["pt"],
-                      "type": qtype(q["stem"]),
-                      "src": source(q.get("passage"), d.get("passages", {}).get(q.get("passage")))})
+                      "type": (q.get("type") or "기타") if math else qtype(q["stem"]),
+                      "src": (q.get("unit") or "단독 문항") if math else
+                      source(q.get("passage"), d.get("passages", {}).get(q.get("passage")))})
     for i, q in enumerate(ws):
         if q["n"] != i + 1:
             raise SystemExit(f"서답형 번호가 순서대로가 아님: {q['n']}")
-        items.append({"n": len(qs) + i + 1, "label": f"서답형 {q['n']}", "pt": q["pt"],
+        items.append({"n": len(qs) + i + 1, "label": f"{wl} {q['n']}", "pt": q["pt"],
                       "type": "단답형" if q["kind"] == "short" else "서술형",
-                      "src": source(q.get("passage"), d.get("passages", {}).get(q.get("passage"))),
-                      **written_item(q)})
+                      "src": (q.get("unit") or "단독 문항") if math else
+                      source(q.get("passage"), d.get("passages", {}).get(q.get("passage"))),
+                      **(math_written_item(q) if math else written_item(q))})
 
     printed, pdf = printed_key(school, d["name"])
     diff = [it["n"] for it in items if it["mode"] == "choice" and printed.get(it["n"]) != it["ans"]]
     if len(printed) != len(qs) or diff:
         raise SystemExit(f"답지 PDF와 정답이 다름: {diff or '문항 수 불일치'} ({pdf.name})")
 
-    pages = page_of(school, d["name"], [it["label"] for it in items])
+    pages = page_of(school, d["name"], [it["label"] for it in items], wl)
     for it in items:
         if it["label"] in pages:
             it["page"] = pages[it["label"]]

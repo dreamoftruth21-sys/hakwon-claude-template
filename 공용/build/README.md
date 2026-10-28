@@ -6,6 +6,7 @@
 | 자료 | 실행 | 설명 |
 |---|---|---|
 | 실전 모의고사 (5지선다 학교 규격) | `py 공용/build/모의고사/build.py <data.json> [--out 폴더]` | `모의고사/README.md` |
+| 수학 시험지 (선택형 · 단답형 · 서술형, 수식 KaTeX · 그림 계산 · sympy 검산) | `py 공용/build/수학/build.py <data.json> [--out 폴더]` | `수학/README.md` |
 | 단어장 | `py 공용/build/단어장/build.py <data.json> [--out 폴더]` | `단어장/README.md` |
 | 학평 변형문제집 재조판 | `py 공용/build/변형문제/재조판.py <data.json> [--out 폴더]` | `변형문제/README.md` |
 | 내신기출·변형문제 지문 지우기(✕)·뽑기 | `py 공용/build/변형문제/기출가공.py <data.json> [--out 폴더]` | `변형문제/README.md` |
@@ -17,7 +18,7 @@
 | 학생별 약점 보완 자료 · 약점 확인 시험 | `py 공용/build/약점보완/build.py <작업폴더> 이름…` · `py 공용/build/약점보완/확인시험.py <작업폴더>` | `약점보완/README.md` · `약점보완` 스킬 |
 | 시험 결과 피드백 (학부모용 한 쪽 · 학생용 오답 해설) | `py 공용/build/피드백/부모용.py <content.json>` · `py 공용/build/피드백/학생용.py <학생.json>` | `피드백/README.md` · `내신피드백` 스킬 |
 
-- `학교/<학교>.json` — 학교 규격 (`exam` 모의고사 · `wordlist` 단어장 · `vocab_test` 단어시험지). 처음에는 `_예시.json` 뿐이다 — 반을 만들 때 `시험지분석` 스킬이 그 학교 기출로 `<학교>.json` 을 쓴다
+- `학교/<학교>.json` — 학교 규격 (`exam` 모의고사 · `math_exam` 수학 시험지 · `wordlist` 단어장 · `vocab_test` 단어시험지). 처음에는 `_예시.json` 뿐이다 — 반을 만들 때 `시험지분석` 스킬이 그 학교 기출로 `<학교>.json` 을 쓴다
 - `core/` — 공통 모듈: `text`(정규화·선택지 회전) · `checks`(결함 모음·멘트·"자리"·정답 분포·3-gram·PDF 실물) · `render`(HTML→PDF, 점검 통과 후에만 저장) · `sources`(학평 원문·PDF·원본 텍스트)
 - 학평 원문: `공용/교재/모의고사/_데이터/고1_bynum.json` · `고2_bynum.json` — 한 벌뿐이다 (반 폴더 사본은 2026-09-18 정리)
 - 각 빌더 `예시/` 의 data.json 은 옛 스크립트 산출물과 쪽별 텍스트가 같은 것을 확인한 것이다 (2026-09-18)

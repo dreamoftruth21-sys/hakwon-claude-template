@@ -1,0 +1,718 @@
+{
+ "subject": "math",
+ "school": "_예시",
+ "name": "예시반_수학_실전모의고사_1회",
+ "title": "예시반 · 2026년 고1 2학기 기말 대비 · 수학 실전 모의고사 1회",
+ "subtitle": "공통수학1 · 선택형 6문항 · 서답형 2문항 · 30점",
+ "guide": "선택형은 알맞은 것을 하나 고르고, 서답형은 풀이 과정과 답을 답란에 쓴다. 문항 끝의 [ ] 안은 배점이다.",
+ "footer": "예시반 · 수학 실전 모의고사 1회",
+ "covered": [
+  "복소수와 이차방정식",
+  "이차방정식과 이차함수",
+  "여러 가지 부등식",
+  "평면좌표",
+  "원의 방정식"
+ ],
+ "range_block": [],
+ "questions": [
+  {
+   "n": 1,
+   "kind": "choice",
+   "pt": 3,
+   "unit": "이차방정식과 이차함수",
+   "type": "그래프 · 교점",
+   "stem": "두 함수 $y=x^2-2x-3$, $y=x+1$ 의 그래프가 그림과 같이 두 점 $\\mathrm{A}$, $\\mathrm{B}$ 에서 만날 때, 선분 $\\mathrm{AB}$ 의 길이는?",
+   "fig": {
+    "x": [
+     -2.2,
+     6.4
+    ],
+    "y": [
+     -4.6,
+     6.6
+    ],
+    "w": 46,
+    "axes": true,
+    "points": {
+     "A": {
+      "intersect": [
+       {
+        "func": "x**2-2*x-3"
+       },
+       {
+        "func": "x+1"
+       }
+      ],
+      "pick": "left"
+     },
+     "B": {
+      "intersect": [
+       {
+        "func": "x**2-2*x-3"
+       },
+       {
+        "func": "x+1"
+       }
+      ],
+      "pick": "right"
+     }
+    },
+    "items": [
+     {
+      "type": "func",
+      "f": "x**2-2*x-3",
+      "label": "y=x^2-2x-3",
+      "label_at": 2.7,
+      "pos": "e"
+     },
+     {
+      "type": "func",
+      "f": "x+1",
+      "label": "y=x+1",
+      "label_at": 5.1
+     },
+     {
+      "type": "point",
+      "at": [
+       "A",
+       "B"
+      ]
+     }
+    ],
+    "asserts": [
+     [
+      "dist(A,B)",
+      "5*sqrt(2)"
+     ]
+    ]
+   },
+   "opts": [
+    "$3\\sqrt{2}$",
+    "$4\\sqrt{2}$",
+    "$5\\sqrt{2}$",
+    "$6\\sqrt{2}$",
+    "$7\\sqrt{2}$"
+   ],
+   "ans": 2,
+   "verify": "x = symbols('x'); r = solve(x**2-2*x-3-(x+1), x); result = sqrt((r[1]-r[0])**2 + ((r[1]+1)-(r[0]+1))**2)",
+   "sol": "$x^2-2x-3=x+1$ 에서 $x^2-3x-4=0$, $(x+1)(x-4)=0$ 이므로 $\\mathrm{A}(-1,\\,0)$, $\\mathrm{B}(4,\\,5)$ 이다. $\\overline{\\mathrm{AB}}=\\sqrt{5^2+5^2}=5\\sqrt{2}$"
+  },
+  {
+   "n": 2,
+   "kind": "choice",
+   "pt": 3,
+   "unit": "평면좌표",
+   "type": "도형 · 두 점 사이의 거리",
+   "stem": "그림과 같이 $\\overline{\\mathrm{AB}}=4$, $\\overline{\\mathrm{BC}}=6$, $\\angle\\mathrm{B}=60^\\circ$ 인 삼각형 $\\mathrm{ABC}$ 에서 선분 $\\mathrm{AC}$ 의 길이는?",
+   "fig": {
+    "x": [
+     -0.7,
+     6.7
+    ],
+    "y": [
+     -0.9,
+     4.1
+    ],
+    "w": 46,
+    "points": {
+     "B": [
+      0,
+      0
+     ],
+     "C": [
+      6,
+      0
+     ],
+     "A": {
+      "polar": [
+       "B",
+       4,
+       60
+      ]
+     }
+    },
+    "items": [
+     {
+      "type": "polygon",
+      "pts": [
+       "A",
+       "B",
+       "C"
+      ]
+     },
+     {
+      "type": "point",
+      "at": [
+       "A",
+       "B",
+       "C"
+      ],
+      "dot": "none"
+     },
+     {
+      "type": "angle",
+      "at": "B",
+      "from": "C",
+      "to": "A",
+      "deg": 60,
+      "label": "60°"
+     },
+     {
+      "type": "label",
+      "mid": [
+       "A",
+       "B"
+      ],
+      "text": "4"
+     },
+     {
+      "type": "label",
+      "mid": [
+       "B",
+       "C"
+      ],
+      "text": "6"
+     }
+    ],
+    "asserts": [
+     [
+      "dist(A,C)",
+      "2*sqrt(7)"
+     ],
+     [
+      "angle(A,B,C)",
+      "60"
+     ]
+    ]
+   },
+   "sol_fig": {
+    "x": [
+     -0.7,
+     6.7
+    ],
+    "y": [
+     -0.9,
+     4.1
+    ],
+    "w": 40,
+    "points": {
+     "B": [
+      0,
+      0
+     ],
+     "C": [
+      6,
+      0
+     ],
+     "A": {
+      "polar": [
+       "B",
+       4,
+       60
+      ]
+     },
+     "H": {
+      "foot": [
+       "A",
+       "B",
+       "C"
+      ]
+     }
+    },
+    "items": [
+     {
+      "type": "polygon",
+      "pts": [
+       "A",
+       "B",
+       "C"
+      ]
+     },
+     {
+      "type": "segment",
+      "from": "A",
+      "to": "H",
+      "style": "dashed"
+     },
+     {
+      "type": "right",
+      "at": "H",
+      "from": "A",
+      "to": "C"
+     },
+     {
+      "type": "point",
+      "at": [
+       "A",
+       "B",
+       "C",
+       "H"
+      ],
+      "dot": "none"
+     }
+    ],
+    "asserts": [
+     [
+      "dist(B,H)",
+      "2"
+     ],
+     [
+      "dist(A,H)",
+      "2*sqrt(3)"
+     ]
+    ]
+   },
+   "opts": [
+    "$2\\sqrt{7}$",
+    "$4\\sqrt{2}$",
+    "$6$",
+    "$2\\sqrt{10}$",
+    "$4\\sqrt{3}$"
+   ],
+   "ans": 0,
+   "verify": "sqrt(4**2 + 6**2 - 2*4*6*cos(pi/3))",
+   "sol": "점 $\\mathrm{A}$ 에서 변 $\\mathrm{BC}$ 에 내린 수선의 발을 $\\mathrm{H}$ 라 하면 삼각형 $\\mathrm{ABH}$ 는 세 각이 $30^\\circ$, $60^\\circ$, $90^\\circ$ 인 직각삼각형이므로 $\\overline{\\mathrm{BH}}=2$, $\\overline{\\mathrm{AH}}=2\\sqrt{3}$, $\\overline{\\mathrm{HC}}=4$ 이다. $\\overline{\\mathrm{AC}}=\\sqrt{(2\\sqrt{3})^2+4^2}=2\\sqrt{7}$"
+  },
+  {
+   "n": 3,
+   "kind": "choice",
+   "pt": 4,
+   "unit": "원의 방정식",
+   "type": "원 · 접선의 길이",
+   "stem": "그림과 같이 원 $x^2+y^2=9$ 밖의 점 $\\mathrm{P}(5,\\,0)$ 에서 원에 그은 접선이 원과 만나는 점을 $\\mathrm{T}$ 라 할 때, 선분 $\\mathrm{PT}$ 의 길이는?",
+   "fig": {
+    "x": [
+     -3.6,
+     6.2
+    ],
+    "y": [
+     -3.6,
+     3.9
+    ],
+    "w": 50,
+    "axes": true,
+    "points": {
+     "O": [
+      0,
+      0
+     ],
+     "P": [
+      5,
+      0
+     ],
+     "T": {
+      "tangent": [
+       "O",
+       3,
+       "P"
+      ],
+      "pick": "upper"
+     }
+    },
+    "items": [
+     {
+      "type": "circle",
+      "center": "O",
+      "r": 3
+     },
+     {
+      "type": "line",
+      "pts": [
+       "P",
+       "T"
+      ]
+     },
+     {
+      "type": "point",
+      "at": [
+       "P",
+       "T"
+      ]
+     }
+    ],
+    "asserts": [
+     [
+      "dist(P,T)",
+      "4"
+     ],
+     [
+      "angle(O,T,P)",
+      "90"
+     ]
+    ]
+   },
+   "sol_fig": {
+    "x": [
+     -3.6,
+     6.2
+    ],
+    "y": [
+     -3.6,
+     3.9
+    ],
+    "w": 40,
+    "axes": true,
+    "points": {
+     "O": [
+      0,
+      0
+     ],
+     "P": [
+      5,
+      0
+     ],
+     "T": {
+      "tangent": [
+       "O",
+       3,
+       "P"
+      ],
+      "pick": "upper"
+     }
+    },
+    "items": [
+     {
+      "type": "circle",
+      "center": "O",
+      "r": 3
+     },
+     {
+      "type": "line",
+      "pts": [
+       "P",
+       "T"
+      ]
+     },
+     {
+      "type": "segment",
+      "from": "O",
+      "to": "T",
+      "style": "dashed"
+     },
+     {
+      "type": "right",
+      "at": "T",
+      "from": "O",
+      "to": "P",
+      "size": 1.6
+     },
+     {
+      "type": "point",
+      "at": [
+       "P",
+       "T"
+      ]
+     }
+    ]
+   },
+   "opts": [
+    "$\\sqrt{7}$",
+    "$3$",
+    "$\\sqrt{13}$",
+    "$4$",
+    "$2\\sqrt{5}$"
+   ],
+   "ans": 3,
+   "verify": "sqrt(5**2 - 3**2)",
+   "sol": "원의 중심 $\\mathrm{O}$ 와 접점 $\\mathrm{T}$ 를 이은 반지름은 접선과 수직이므로 삼각형 $\\mathrm{OTP}$ 는 $\\angle\\mathrm{OTP}=90^\\circ$ 인 직각삼각형이다. $\\overline{\\mathrm{PT}}=\\sqrt{5^2-3^2}=4$"
+  },
+  {
+   "n": 4,
+   "kind": "choice",
+   "pt": 4,
+   "unit": "이차방정식과 이차함수",
+   "type": "그래프 · 격자점",
+   "stem": "그림과 같이 곡선 $y=-x^2+4x$ 와 직선 $y=x$ 로 둘러싸인 부분의 내부(경계선 제외)에 있는 점 중에서 $x$ 좌표와 $y$ 좌표가 모두 정수인 점의 개수는?",
+   "fig": {
+    "x": [
+     -0.8,
+     6.0
+    ],
+    "y": [
+     -0.8,
+     4.7
+    ],
+    "w": 50,
+    "axes": true,
+    "grid": 1,
+    "ticks": {
+     "x": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "y": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    "points": {
+     "O": [
+      0,
+      0
+     ],
+     "Q": {
+      "intersect": [
+       {
+        "func": "-x**2+4*x"
+       },
+       {
+        "func": "x"
+       }
+      ],
+      "pick": "right"
+     }
+    },
+    "items": [
+     {
+      "type": "shade",
+      "between": [
+       "-x**2+4*x",
+       "x"
+      ],
+      "domain": [
+       0,
+       3
+      ]
+     },
+     {
+      "type": "func",
+      "f": "-x**2+4*x",
+      "domain": [
+       -0.2,
+       4.2
+      ],
+      "label": "y=-x^2+4x",
+      "label_at": 3.5
+     },
+     {
+      "type": "func",
+      "f": "x",
+      "label": "y=x",
+      "label_at": 4.4
+     },
+     {
+      "type": "point",
+      "at": "Q",
+      "label": ""
+     }
+    ],
+    "asserts": [
+     [
+      "Q.x",
+      "3"
+     ],
+     [
+      "Q.y",
+      "3"
+     ]
+    ]
+   },
+   "opts": [
+    "$1$",
+    "$2$",
+    "$3$",
+    "$4$",
+    "$5$"
+   ],
+   "ans": 1,
+   "verify": "result = sum(1 for a in range(-5, 10) for b in range(-5, 10) if a < b < -a**2 + 4*a)",
+   "sol": "두 그래프는 $x=0$, $x=3$ 에서 만난다. $x=1$ 일 때 $1<y<3$ 이므로 $y=2$, $x=2$ 일 때 $2<y<4$ 이므로 $y=3$ 이다. 따라서 $(1,\\,2)$, $(2,\\,3)$ 의 2개이다."
+  },
+  {
+   "n": 5,
+   "kind": "choice",
+   "pt": 3,
+   "unit": "여러 가지 부등식",
+   "type": "절댓값 부등식 · 수직선",
+   "stem": "부등식 $|x-a|\\le b$ 의 해를 수직선 위에 나타내면 그림과 같을 때, $a+b$ 의 값은? (단, $a$, $b$ 는 상수이고 $b>0$ 이다.)",
+   "fig": {
+    "kind": "numberline",
+    "range": [
+     -3,
+     7
+    ],
+    "w": 52,
+    "ticks": [
+     -1,
+     5
+    ],
+    "marks": [
+     {
+      "at": -1,
+      "closed": true
+     },
+     {
+      "at": 5,
+      "closed": true
+     }
+    ],
+    "spans": [
+     {
+      "from": -1,
+      "to": 5,
+      "level": 1
+     }
+    ]
+   },
+   "opts": [
+    "$1$",
+    "$2$",
+    "$3$",
+    "$4$",
+    "$5$"
+   ],
+   "ans": 4,
+   "verify": "a, b = symbols('a b'); s = solve([a - b + 1, a + b - 5], [a, b]); result = s[a] + s[b]",
+   "sol": "$|x-a|\\le b$ 의 해는 $a-b\\le x\\le a+b$ 이므로 $a-b=-1$, $a+b=5$ 이다. 따라서 $a+b=5$ (이때 $a=2$, $b=3$)"
+  },
+  {
+   "n": 6,
+   "kind": "choice",
+   "pt": 3,
+   "unit": "복소수와 이차방정식",
+   "type": "복소수 계산",
+   "stem": "$\\dfrac{1+i}{1-i}$ 의 값은? (단, $i=\\sqrt{-1}$ 이다.)",
+   "opts": [
+    "$-1$",
+    "$1$",
+    "$-i$",
+    "$1+i$",
+    "$i$"
+   ],
+   "ans": 4,
+   "verify": "(1 + I) / (1 - I)",
+   "sol": "분모와 분자에 $1+i$ 를 곱하면 $\\dfrac{(1+i)^2}{(1-i)(1+i)}=\\dfrac{2i}{2}=i$"
+  },
+  {
+   "n": 1,
+   "kind": "short",
+   "pt": 4,
+   "unit": "복소수와 이차방정식",
+   "type": "판별식",
+   "stem": "$x$ 에 대한 이차방정식 $x^2-3x+2k=0$ 이 중근을 가질 때, 상수 $k$ 의 값을 구하시오.",
+   "answer": "$\\dfrac{9}{8}$",
+   "verify": "k = symbols('k'); result = solve((-3)**2 - 4*1*(2*k), k)[0]",
+   "sol": "판별식 $D=(-3)^2-4\\cdot 2k=9-8k=0$ 이므로 $k=\\dfrac{9}{8}$"
+  },
+  {
+   "n": 2,
+   "kind": "essay",
+   "pt": 6,
+   "unit": "평면좌표",
+   "type": "두 점에서 같은 거리에 있는 점",
+   "stem": "두 점 $\\mathrm{A}(1,\\,2)$, $\\mathrm{B}(5,\\,4)$ 에서 같은 거리에 있는 $x$축 위의 점 $\\mathrm{P}$ 의 좌표를 구하는 과정을 서술하시오.",
+   "space_mm": 42,
+   "answer": "$\\mathrm{P}\\left(\\dfrac{9}{2},\\,0\\right)$",
+   "value": "(9/2, 0)",
+   "verify": "p = symbols('p'); s = solve((p-1)**2 + 2**2 - ((p-5)**2 + 4**2), p); result = (s[0], 0)",
+   "steps": [
+    {
+     "desc": "점 $\\mathrm{P}$ 의 좌표를 $(p,\\,0)$ 으로 놓고 $\\overline{\\mathrm{PA}}=\\overline{\\mathrm{PB}}$ 를 $(p-1)^2+2^2=(p-5)^2+4^2$ 으로 세운다",
+     "pt": 2
+    },
+    {
+     "desc": "식을 정리한 $8p=36$ 에서 $p=\\dfrac{9}{2}$ 를 구한다",
+     "pt": 3
+    },
+    {
+     "desc": "점 $\\mathrm{P}$ 의 좌표 $\\left(\\dfrac{9}{2},\\,0\\right)$ 을 쓴다",
+     "pt": 1
+    }
+   ],
+   "criteria": "$p$ 값을 잘못 구하면 둘째 · 셋째 단계 점수를 주지 않는다. 좌표 대신 $p$ 값만 쓰면 셋째 단계 점수를 주지 않는다.",
+   "sol_fig": {
+    "x": [
+     -0.6,
+     6.0
+    ],
+    "y": [
+     -0.8,
+     4.8
+    ],
+    "w": 40,
+    "axes": true,
+    "points": {
+     "A": [
+      1,
+      2
+     ],
+     "B": [
+      5,
+      4
+     ],
+     "M": {
+      "mid": [
+       "A",
+       "B"
+      ]
+     },
+     "N": {
+      "rotate": [
+       "A",
+       "M",
+       -90
+      ]
+     },
+     "P": {
+      "intersect": [
+       {
+        "hline": 0
+       },
+       {
+        "line": [
+         "M",
+         "N"
+        ]
+       }
+      ]
+     }
+    },
+    "items": [
+     {
+      "type": "segment",
+      "from": "P",
+      "to": "A"
+     },
+     {
+      "type": "segment",
+      "from": "P",
+      "to": "B"
+     },
+     {
+      "type": "equal",
+      "segs": [
+       [
+        "P",
+        "A"
+       ],
+       [
+        "P",
+        "B"
+       ]
+      ],
+      "ticks": 2
+     },
+     {
+      "type": "point",
+      "at": [
+       "A",
+       "B",
+       "P"
+      ]
+     }
+    ],
+    "asserts": [
+     [
+      "P.x",
+      "9/2"
+     ]
+    ]
+   },
+   "sol": "$\\mathrm{P}(p,\\,0)$ 이라 하면 $\\overline{\\mathrm{PA}}^2=\\overline{\\mathrm{PB}}^2$ 에서 $(p-1)^2+4=(p-5)^2+16$, $p^2-2p+5=p^2-10p+41$, $8p=36$ 이므로 $p=\\dfrac{9}{2}$"
+  }
+ ]
+}

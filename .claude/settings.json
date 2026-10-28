@@ -1,6 +1,21 @@
 {
   "model": "claude-sonnet-5-5",
   "autoCompactWindow": 200000,
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Bash(py 공용/*)",
+      "Bash(py -X utf8 공용/*)",
+      "Bash(node 공용/*)",
+      "Bash(clasp *)",
+      "Bash(powershell -NoProfile -ExecutionPolicy Bypass -File 공용/설치/*)",
+      "PowerShell(py 공용/*)",
+      "PowerShell(py -X utf8 공용/*)",
+      "PowerShell(node 공용/*)",
+      "PowerShell(clasp *)",
+      "PowerShell(powershell -NoProfile -ExecutionPolicy Bypass -File 공용/설치/*)"
+    ]
+  },
   "hooks": {
     "UserPromptSubmit": [
       {

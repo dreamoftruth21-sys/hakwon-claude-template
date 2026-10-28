@@ -15,6 +15,7 @@ import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+from core import brand  # noqa: E402
 from core import checks as C  # noqa: E402
 from core import render as R  # noqa: E402
 from core import sources as S  # noqa: E402
@@ -287,9 +288,13 @@ def answer_form(q):
     return '<div class="af">답:</div>' + '<div class="wl"></div>' * q["lines"]
 
 
+BRAND_CSS = ".brand-top{text-align:right;line-height:0;margin:0 0 1.4mm 0}"
+
 def page_html(Q, d, prof, answers=False):
     total = prof.get("total", 100)
-    b = ['<div class="head"><div class="t1">%s%s</div><div class="t2">%s</div>'
+    logo = brand.header_logo("8mm")
+    b = ['<div class="brand-top">%s</div>' % logo] if logo else []      # 학원 로고 — 첫 쪽 오른쪽 위 (공용/로고)
+    b += ['<div class="head"><div class="t1">%s%s</div><div class="t2">%s</div>'
          '<div class="bar"><span>이름 ______________________</span>'
          '<span>점수 ________ / %d</span></div></div>'
          % (d["title"], prof.get("answer_title_suffix", "") if answers else "", d["subtitle"], total),
@@ -330,8 +335,8 @@ def page_html(Q, d, prof, answers=False):
                 b.append('<div class="sol"><b>%s</b> 모범답안 <b>%s</b> &nbsp;%s%s</div>'
                          % (qlabel(q, prof), q["answer"], q["sol"], crit))
         b.append("</div>")
-    return '<!doctype html><meta charset="utf-8"><style>%s</style><body>%s</body>' % (
-        CSS + prof.get("css_extra", ""), "".join(b))
+    return '<!doctype html><meta charset="utf-8"><style>%s</style><body>%s%s</body>' % (
+        CSS + BRAND_CSS + prof.get("css_extra", ""), brand.watermark(), "".join(b))
 
 
 # ── 점검 1: 데이터 ──────────────────────────────────────────

@@ -34,6 +34,7 @@ INCLUDE = [
     r"^공용/사용기록/([^/]+\.py|수신주소\.txt)$",
     r"^공용/정리/.+",
     r"^공용/판지문\.py$",
+    r"^공용/로고/[^/]+\.png$",                  # 학원 로고 — 선생님이 바꿨으면 갱신이 충돌로 묻는다
     r"^_새반_틀/.+",
     r"^README\.md$",
     r"^CLAUDE\.md$",
@@ -86,7 +87,7 @@ def find_root(start):
 def version_date(root):
     try:
         first = (root / "공용" / "VERSION.txt").read_text(encoding="utf-8-sig").strip().splitlines()[0]
-        m = re.match(r"(\d{4}-\d{2}-\d{2})", first)
+        m = re.match(r"(\d{4}-\d{2}-\d{2}(?:-\d+)?)", first)   # 같은 날 두 번째 판은 2026-10-28-2
         return m.group(1) if m else None
     except Exception:
         return None

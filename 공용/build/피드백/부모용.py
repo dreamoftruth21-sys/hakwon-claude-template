@@ -15,6 +15,9 @@ import sys
 
 from playwright.sync_api import sync_playwright
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
+from core import brand  # noqa: E402
+
 CSS = """
 @page{size:A4;margin:0}
 *{box-sizing:border-box}
@@ -55,7 +58,8 @@ def build(C, s, here):
                      for x in C["review"])
     fb = "".join("<p>%s</p>" % html.escape(x) for x in s["fb_paras"])
     score = str(s["score"]) + ("" if "점" in str(s["score"]) else "점")
-    doc = f"""<!doctype html><meta charset="utf-8"><style>{CSS}</style><body><div class="page">
+    doc = f"""<!doctype html><meta charset="utf-8"><style>{CSS}</style><body>{brand.watermark(front=True)}<div class="page">
+<div style="text-align:right;line-height:0;margin-bottom:1.5mm">{brand.header_logo('8mm')}</div>
 <div class="top"><div><div class="year">{html.escape(C['year_title'])}</div><div class="brand">{html.escape(C['brand'])} <span>{html.escape(C['subject'])}</span></div></div>
  <div class="who">{html.escape(C['school'])} &nbsp;<u>{html.escape(str(C['grade']))}</u>&nbsp;학년 &nbsp;/&nbsp; 이름 &nbsp;<u>{html.escape(s.get('spaced') or s['name'])}</u></div></div>
 <div class="sec"><div class="bar"><div class="pill">기출분석</div><div class="t">{html.escape(C['exam_title'])}</div></div>

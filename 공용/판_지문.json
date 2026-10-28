@@ -1,7 +1,7 @@
 {
- "판": "2026-10-28-2",
- "태그": "판-2026-10-28-2",
- "zip": "https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/%ED%8C%90-2026-10-28-2.zip",
+ "판": "2026-10-28-3",
+ "태그": "판-2026-10-28-3",
+ "zip": "https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/%ED%8C%90-2026-10-28-3.zip",
  "파일수": 99,
  "파일": {
   ".claude/agents/검증.md": "f469748fc6fd0cbddf37013f1cb6463a",
@@ -29,7 +29,7 @@
   ".claude/skills/자료정리/scripts/put.ps1": "32145b0f7ffa8d82b844797ca3cb4321",
   ".claude/skills/자료정리/scripts/sort.ps1": "8ea8c333cc6caa9293cbdde886e921c4",
   ".claude/skills/자체점검/SKILL.md": "cfe5eeaebc28baa2661b01031aa12d0d",
-  ".claude/skills/처음시작/SKILL.md": "ac4fd43b25c7dad84e4816623f1670c2",
+  ".claude/skills/처음시작/SKILL.md": "5051804bf5e6ced5e93e5c43e72d7d0a",
   "CLAUDE.md": "f9d9b5366cc540c09cc13c21fdfe60d7",
   "README.md": "26ea5e4dd3c2005832630ffdb5057d0d",
   "_새반_틀/.claude/settings.json": "26c2464b1b97d230ce51bf89ab1e167c",

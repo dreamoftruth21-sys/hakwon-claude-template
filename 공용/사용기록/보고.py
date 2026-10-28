@@ -35,6 +35,7 @@ MANIFEST = ROOT / "공용" / "판_지문.json"
 SKILL_DIR = ROOT / ".claude" / "skills"
 MAX_RECORDS = 1500
 SHOW_RECORDS = 50           # 「보기」가 보여 주는 기록 수
+FIRST_ASK_DAYS = 3          # 설치 뒤 이 날수가 지나야 처음 「보내」를 묻는다
 
 MAX_FILE = 300_000          # 자료 · 스킬 파일 하나 (글자)
 MAX_TOTAL = 3_000_000       # 한 번 보내는 자료 · 스킬 합계 (글자)
@@ -278,6 +279,18 @@ def setup_cutoff():
     return st.get("설치끝", "")
 
 
+def too_early():
+    """처음 묻기는 설치 뒤 며칠 지나서 — 세팅 날 첫 「수업 준비」를 가로막지 않는다. 설치끝을 모르는 옛 설치는 바로 묻는다."""
+    cut = setup_cutoff()
+    if cut == "9999":
+        return True
+    try:
+        end = datetime.date.fromisoformat(cut[:10])
+    except Exception:
+        return False
+    return (datetime.date.today() - end).days < FIRST_ASK_DAYS
+
+
 def pending():
     s = state()
     cutoff = setup_cutoff()
@@ -304,6 +317,9 @@ def cmd_status():
     c, by_skill = counts(recs)
     out = {"설치ID": install_id(), "과목": s.get("과목"), "과목물음": not s.get("과목"),
            "보낼것": c, "자료수": len(mats), "스킬수": len(skills), "스킬별": by_skill, "문구": None, "물음": "없음"}
+    if (recs or mats or skills) and not s.get("마지막질문") and too_early():
+        out["미룸까닭"] = "설치 뒤 %d일이 지나야 처음 묻는다" % FIRST_ASK_DAYS
+        recs, mats, skills = [], [], []
     if recs or mats or skills:
         dates = [r["시각"][:10] for r in recs] + [m["고친 시각"][:10] for m in mats]
         out["기간"] = [min(dates), max(dates)] if dates else []

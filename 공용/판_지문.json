@@ -1,7 +1,7 @@
 {
- "판": "2026-10-28-7",
- "태그": "판-2026-10-28-7",
- "zip": "https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/%ED%8C%90-2026-10-28-7.zip",
+ "판": "2026-10-28-8",
+ "태그": "판-2026-10-28-8",
+ "zip": "https://github.com/dreamoftruth21-sys/hakwon-claude-template/archive/refs/tags/%ED%8C%90-2026-10-28-8.zip",
  "파일수": 100,
  "파일": {
   ".claude/agents/검증.md": "f469748fc6fd0cbddf37013f1cb6463a",
@@ -90,7 +90,7 @@
   "공용/로고/머리로고.png": "1b95c362a3a20353da4ade0cd93200ba",
   "공용/로고/워터마크.png": "7884804e6d0eb78851f17f006d1fe345",
   "공용/사용기록/기록.py": "2644498e804f632682eb5007fcd3ccb6",
-  "공용/사용기록/보고.py": "a249234602253b0e6c8ca57cc4892a92",
+  "공용/사용기록/보고.py": "0026633d3de5533dde8b16a8509762d4",
   "공용/사용기록/수신주소.txt": "0848067a1711c1e43fc05e146e3ad01c",
   "공용/설치/프로그램설치.ps1": "5949de6df039a9c70d3bc3c4bbf6e34a",
   "공용/온라인채점/apps_script/.claspignore": "99686c5f0e05ee346bb0a0961adbac20",
